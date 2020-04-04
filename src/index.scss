@@ -1,0 +1,26 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    // ****** colors
+    --white: #ffff;
+    --dark-blue: #1d2d44;
+    --purple: #7d59fb;
+    --pink: #dabafd;
+    //********* fonts
+    --Montserrat: "Montserrat", sans-serif;
+    --Mukta: "Mukta", sans-serif;
+    --Raleway: "Raleway", sans-serif;
+    // ********** font sizes
+    --BigTitle: 1.8rem;
+    --MidTitle: 1.2rem;
+    --Text: 0.8rem;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
