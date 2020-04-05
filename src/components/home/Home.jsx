@@ -5,16 +5,19 @@ import Indexes from "../indexes/Indexes";
 import Crypto from "../crypto/Crypto";
 import Forex from "../forex/Forex";
 
-import { HomeContainer } from "./Home.styles";
+import { HomeContainer, Background } from "./Home.styles";
 
 const Home = () => {
   return (
-    <HomeContainer>
-      <Stocks />
-      <Indexes />
-      <Crypto />
-      <Forex />
-    </HomeContainer>
+    <>
+      <Background />
+      <HomeContainer>
+        <Stocks />
+        <Indexes />
+        <Crypto />
+        <Forex />
+      </HomeContainer>
+    </>
   );
 };
 

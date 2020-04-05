@@ -7,6 +7,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
+    "highcharts": "^8.0.4",
+    "highcharts-react-official": "^3.0.0",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -14,6 +16,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-slick": "^0.25.2",
+    "recharts": "^1.8.5",
     "styled-components": "^5.0.1",
     "swiper": "^5.3.6"
   },

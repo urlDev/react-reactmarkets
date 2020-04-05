@@ -1,38 +1,51 @@
 import React, { useContext } from "react";
 import { FinanceContext } from "../../Context";
 import Swiper from "react-id-swiper";
+import { LineChart, Line } from "recharts";
 
-import { Title, Text, Container } from "./Stocks.styles";
-
+import { Title, Text, Container, SmallText, Chart } from "./Stocks.styles";
 
 const params = {
   spaceBetween: 30,
   centeredSlides: true,
-  rebuildOnUpdate: true,
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true
+  autoplay: {
+    delay: 2500,
+    disableOnInteraction: false
   }
 };
 
 const Stocks = () => {
-  const { stocks } = useContext(FinanceContext);
+  const { stocks, hourly, handleClick } = useContext(FinanceContext);
+
+  const data = [
+    { name: "Page A", uv: 400, pv: 2400, amt: 2400 },
+    { name: "Page A", uv: 300, pv: 2200, amt: 2200 }
+  ];
 
   return (
     <div>
       {stocks ? (
-        <>
+        <div>
           <Title>Stocks</Title>
           <Swiper {...params}>
             {stocks.map(stock => {
               return (
-                <Container>
-                  <Text key={stock.symbol}>{stock.symbol}</Text>
+                <Container onClick={() => handleClick(stock.symbol)} to={`${stock.symbol}`} key={stock.symbol}>
+                  <div>
+                    <Text style={{ marginBottom: "30px" }}>{stock.price}</Text>
+                    <div>
+                      <Text>{stock.symbol}</Text>
+                      <SmallText>{stock.name}</SmallText>
+                    </div>
+                  </div>
+                  <div>
+                    <h1>Graphic</h1>
+                  </div>
                 </Container>
               );
             })}
           </Swiper>
-        </>
+        </div>
       ) : null}
     </div>
   );
