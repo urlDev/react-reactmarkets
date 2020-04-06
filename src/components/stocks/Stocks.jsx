@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { FinanceContext } from "../../Context";
 import Swiper from "react-id-swiper";
-import { LineChart, Line } from "recharts";
+import { LineChart, Line, ResponsiveContainer } from "recharts";
 
-import { Title, Text, Container, SmallText, Chart } from "./Stocks.styles";
+import { Title, Text, Container, SmallText } from "./Stocks.styles";
 
 const params = {
   spaceBetween: 30,
@@ -15,12 +15,7 @@ const params = {
 };
 
 const Stocks = () => {
-  const { stocks, hourly, handleClick } = useContext(FinanceContext);
-
-  const data = [
-    { name: "Page A", uv: 400, pv: 2400, amt: 2400 },
-    { name: "Page A", uv: 300, pv: 2200, amt: 2200 }
-  ];
+  const { stocks, stockChart, handleClick } = useContext(FinanceContext);
 
   return (
     <div>
@@ -28,9 +23,16 @@ const Stocks = () => {
         <div>
           <Title>Stocks</Title>
           <Swiper {...params}>
-            {stocks.map(stock => {
+            {/* mapping two arrays */}
+            {stocks.map((stock, index) => {
+              // this will get the stocksChart in spesific index that stocks is
+              const stocksChart = stockChart[index];
               return (
-                <Container onClick={() => handleClick(stock.symbol)} to={`${stock.symbol}`} key={stock.symbol}>
+                <Container
+                  onClick={() => handleClick(stock.symbol)}
+                  to={`${stock.symbol}`}
+                  key={stock.symbol}
+                >
                   <div>
                     <Text style={{ marginBottom: "30px" }}>{stock.price}</Text>
                     <div>
@@ -38,9 +40,16 @@ const Stocks = () => {
                       <SmallText>{stock.name}</SmallText>
                     </div>
                   </div>
-                  <div>
-                    <h1>Graphic</h1>
-                  </div>
+                  <ResponsiveContainer>
+                    <LineChart data={stocksChart}>
+                      <Line
+                        type="monotone"
+                        dataKey="close"
+                        stroke="#1d2d44"
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
                 </Container>
               );
             })}

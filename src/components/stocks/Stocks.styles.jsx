@@ -6,8 +6,8 @@ import styled from "styled-components";
 export const Container = styled(Link)`
 text-decoration: none;
   height: 150px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px var(--pink);
+  // border-radius: 10px;
+  // box-shadow: 0 0 5px var(--pink);
   padding: 20px;
   background: var(--white);
   display: grid;

@@ -19,8 +19,6 @@ export const NavContainer = styled.nav`
   }
 `;
 
-
-
 export const StyledLink = styled(NavLink)`
   color: var(--dark-blue);
   font-size: 1.5rem;

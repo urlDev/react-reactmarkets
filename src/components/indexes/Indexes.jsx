@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { FinanceContext } from "../../Context";
 import Swiper from "react-id-swiper";
+import { LineChart, Line, ResponsiveContainer } from "recharts";
 
 import { Title, Text, Container, SmallText } from "../stocks/Stocks.styles";
 
@@ -14,7 +15,7 @@ const params = {
 };
 
 const Indexes = () => {
-  const { indexes, handleClick } = useContext(FinanceContext);
+  const { indexes, handleClick, indexChart } = useContext(FinanceContext);
 
   return (
     <div>
@@ -24,7 +25,11 @@ const Indexes = () => {
           <Swiper {...params}>
             {indexes.map(index => {
               return (
-                <Container onClick={() => handleClick(index.indexName)} to={`${index.indexName}`} key={index.indexName}>
+                <Container
+                  onClick={() => handleClick(index.indexName)}
+                  to={`${index.indexName}`}
+                  key={index.indexName}
+                >
                   <div>
                     <Text style={{ marginBottom: "30px" }}>{index.price}</Text>
                     <div>
@@ -32,9 +37,16 @@ const Indexes = () => {
                       <SmallText>{index.indexName}</SmallText>
                     </div>
                   </div>
-                  <div>
-                    <h1>Graphic</h1>
-                  </div>
+                  <ResponsiveContainer>
+                    <LineChart data={indexChart}>
+                      <Line
+                        type="monotone"
+                        dataKey="close"
+                        stroke="#1d2d44"
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
                 </Container>
               );
             })}

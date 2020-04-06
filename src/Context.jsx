@@ -1,4 +1,5 @@
 import React, { Component, createContext } from "react";
+import axios from "axios";
 
 export const FinanceContext = createContext();
 
@@ -6,35 +7,40 @@ class FinanceContextProvider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stocks: "",
-      indexes: "",
-      crypto: "",
-      forex: "",
-      hourly: [],
-      name: ""
+      stocks: [],
+      indexes: [],
+      crypto: [],
+      forex: [],
+      stockChart: [],
+      name: "",
+      indexChart: []
     };
   }
 
-//  https://reactjs.org/docs/concurrent-mode-suspense.html
-// check this out if you need to modify fetches accordingly
+  //  https://reactjs.org/docs/concurrent-mode-suspense.html
+  // check this out if you need to modify fetches accordingly
   componentDidMount() {
     Promise.all([
-      this.getHourly(),
-      this.getStocks(),
       this.getIndexes(),
+      this.getStocks(),
       this.getCrypto(),
-      this.getForex()]
-    );
+      this.getForex()
+    ]);
   }
 
   getStocks = async () => {
     const response = await fetch(
-      "https://financialmodelingprep.com/api/v3/quote/AAPL,FB,TSLA"
+      "https://financialmodelingprep.com/api/v3/quote/AAPL,FB,TSLA,MSFT,GOOG"
     );
     const data = await response.json();
-    this.setState({
-      stocks: data
-    });
+    this.setState(
+      {
+        stocks: data
+      },
+      () => {
+        this.getStockCharts();
+      }
+    );
   };
 
   getIndexes = async () => {
@@ -42,9 +48,14 @@ class FinanceContextProvider extends Component {
       "https://financialmodelingprep.com/api/v3/majors-indexes"
     );
     const data = await response.json();
-    this.setState({
-      indexes: data.majorIndexesList
-    });
+    this.setState(
+      {
+        indexes: data.majorIndexesList
+      },
+      () => {
+        this.getIndexCharts();
+      }
+    );
   };
 
   getCrypto = async () => {
@@ -67,21 +78,42 @@ class FinanceContextProvider extends Component {
     });
   };
 
-  getHourly = async () => {
-    const response = await fetch(
-      "https://financialmodelingprep.com/api/v3/historical-chart/1hour/AAPL"
-    );
-    const data = await response.json();
-    this.setState({
-      hourly: data
+  getStockCharts = () => {
+    this.state.stocks.map(async stock => {
+      const response = await fetch(
+        `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.symbol}`
+      );
+      const data = await response.json();
+      this.setState({
+        stockChart: [...this.state.stockChart, data]
+      });
     });
   };
 
-  handleClick = (name) => {
+  getIndexCharts = () => {
+    this.state.indexes.map(index => {
+      console.log(index.ticker);
+      return axios
+        .get(
+          `https://financialmodelingprep.com/api/v3/historical-chart/1hour/^${index.ticker.slice(
+            1
+          )}`
+        )
+        .then(({ data }) => {
+          this.setState(
+            {
+              indexChart: data
+            }
+          );
+        });
+    });
+  };
+
+  handleClick = name => {
     this.setState({
       name: name
-    })
-  }
+    });
+  };
 
   render() {
     return (
@@ -94,6 +126,7 @@ class FinanceContextProvider extends Component {
           getForex: this.getForex,
           getHourly: this.getHourly,
           handleClick: this.handleClick,
+          getIndexChart: this.getIndexChart
         }}
       >
         {this.props.children}
