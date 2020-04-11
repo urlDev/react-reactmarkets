@@ -6,9 +6,10 @@
     // ****** colors
     --white: #ffff;
     --dark-blue: #1d2d44;
-    --purple: #7d59fb;
+    --purple: #6e7bfb;
     --pink: #dabafd;
     --blue: #3E5C76;
+    --green: #009750;
     //********* fonts
     --Montserrat: "Montserrat", sans-serif;
     --Mukta: "Mukta", sans-serif;
@@ -28,7 +29,5 @@ body {
 }
 
 .swiper-container {
-    // overflow: visible;
-    border-radius: 10px;
-    box-shadow: 0 0 5px var(--pink);
+    overflow: visible;
 }

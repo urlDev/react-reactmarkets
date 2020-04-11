@@ -6,6 +6,7 @@ import Search from "./components/search/Search";
 import Portfolio from "./components/portfolio/Portfolio";
 import Profile from "./components/profile/Profile";
 import Details from "./components/details/Details";
+import TopNav from "./components/topNav/TopNav";
 
 import { Switch, Route } from "react-router-dom";
 
@@ -15,6 +16,7 @@ function App() {
   return (
     <>
       <FinanceContextProvider>
+        <TopNav />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/search" component={Search} />

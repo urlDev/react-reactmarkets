@@ -11,9 +11,10 @@ class FinanceContextProvider extends Component {
       indexes: [],
       crypto: [],
       forex: [],
-      stockChart: [],
       name: "",
-      indexChart: []
+      stockChart: [],
+      indexChart: [],
+      cryptoChart: [],
     };
   }
 
@@ -24,7 +25,7 @@ class FinanceContextProvider extends Component {
       this.getIndexes(),
       this.getStocks(),
       this.getCrypto(),
-      this.getForex()
+      this.getForex(),
     ]);
   }
 
@@ -35,7 +36,7 @@ class FinanceContextProvider extends Component {
     const data = await response.json();
     this.setState(
       {
-        stocks: data
+        stocks: data,
       },
       () => {
         this.getStockCharts();
@@ -50,7 +51,7 @@ class FinanceContextProvider extends Component {
     const data = await response.json();
     this.setState(
       {
-        indexes: data.majorIndexesList
+        indexes: data.majorIndexesList,
       },
       () => {
         this.getIndexCharts();
@@ -60,12 +61,17 @@ class FinanceContextProvider extends Component {
 
   getCrypto = async () => {
     const response = await fetch(
-      "https://financialmodelingprep.com/api/v3/cryptocurrencies"
+      "https://financialmodelingprep.com/api/v3/quotes/crypto"
     );
     const data = await response.json();
-    this.setState({
-      crypto: data.cryptocurrenciesList.slice(0, 10)
-    });
+    this.setState(
+      {
+        crypto: data.slice(0, 15),
+      },
+      () => {
+        this.getCryptoCharts();
+      }
+    );
   };
 
   getForex = async () => {
@@ -74,25 +80,24 @@ class FinanceContextProvider extends Component {
     );
     const data = await response.json();
     this.setState({
-      forex: data.forexList.slice(0, 10)
+      forex: data.forexList.slice(0, 10),
     });
   };
 
   getStockCharts = () => {
-    this.state.stocks.map(async stock => {
+    this.state.stocks.map(async (stock) => {
       const response = await fetch(
         `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.symbol}`
       );
       const data = await response.json();
       this.setState({
-        stockChart: [...this.state.stockChart, data]
+        stockChart: [...this.state.stockChart, data],
       });
     });
   };
 
   getIndexCharts = () => {
-    this.state.indexes.map(index => {
-      console.log(index.ticker);
+    this.state.indexes.map((index) => {
       return axios
         .get(
           `https://financialmodelingprep.com/api/v3/historical-chart/1hour/^${index.ticker.slice(
@@ -100,18 +105,28 @@ class FinanceContextProvider extends Component {
           )}`
         )
         .then(({ data }) => {
-          this.setState(
-            {
-              indexChart: data
-            }
-          );
+          this.setState({
+            indexChart: data,
+          });
         });
     });
   };
 
-  handleClick = name => {
+  getCryptoCharts = () => {
+    this.state.crypto.map(async (crypt) => {
+      const response = await fetch(
+        `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${crypt.symbol}`
+      );
+      const data = await response.json();
+      this.setState({
+        cryptoChart: data
+      })
+    });
+  };
+
+  handleClick = (name) => {
     this.setState({
-      name: name
+      name: name,
     });
   };
 
@@ -126,7 +141,7 @@ class FinanceContextProvider extends Component {
           getForex: this.getForex,
           getHourly: this.getHourly,
           handleClick: this.handleClick,
-          getIndexChart: this.getIndexChart
+          getIndexChart: this.getIndexChart,
         }}
       >
         {this.props.children}

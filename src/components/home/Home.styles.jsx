@@ -1,19 +1,19 @@
 import styled from "styled-components";
 
-export const HomeContainer = styled.div`
+export const PageContainer = styled.div`
   padding: 0 20px 0 20px;
   // this will keep the menu bar on bottom in every page, as fixed
   overflow: hidden;
-  margin-top: -180px;
+  margin-top: -170px;
   padding-bottom: 80px;
   z-index: 1;
 `;
 
 export const Background = styled.div`
-  background-image: linear-gradient(
-    109.6deg,
-    rgba(218, 185, 252, 1) 11.2%,
-    rgba(125, 89, 252, 1) 91.1%
+  background: linear-gradient(
+    135deg,
+    rgba(156, 252, 247, 1) 0%,
+    rgba(110, 123, 251, 1) 42%
   );
   height: 200px;
   border-radius: 0 0 20px 20px;

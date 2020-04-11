@@ -7,6 +7,7 @@ import { Title, Text, Container } from "../stocks/Stocks.styles";
 const params = {
   spaceBetween: 30,
   centeredSlides: true,
+  rebuildOnUpdate: true,
   autoplay: {
     delay: 1750,
     disableOnInteraction: false

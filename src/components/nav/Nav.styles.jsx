@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
 export const NavContainer = styled.nav`
-  background-image: linear-gradient(
-    109.6deg,
-    rgba(218, 185, 252, 1) 11.2%,
-    rgba(125, 89, 252, 1) 91.1%
+  background: linear-gradient(
+    135deg,
+    rgba(156, 252, 247, 1) 0%,
+    rgba(110, 123, 251, 1) 42%
   );
   border-radius: 10px 10px 0 0;
   padding: 0 20px 0 20px;

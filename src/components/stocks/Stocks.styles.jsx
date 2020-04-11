@@ -1,13 +1,13 @@
 import "../../index";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 
 export const Container = styled(Link)`
-text-decoration: none;
+  text-decoration: none;
   height: 150px;
-  // border-radius: 10px;
-  // box-shadow: 0 0 5px var(--pink);
+  border-radius: 10px;
+  box-shadow: 0 0 5px var(--purple);
   padding: 20px;
   background: var(--white);
   display: grid;
@@ -41,4 +41,12 @@ export const SmallText = styled.p`
 export const Chart = styled.div`
   height: 100%;
   width: 100%;
+`;
+
+export const Percentage = styled(SmallText)`
+  background: var(--green);
+  padding: 5px 7px;
+  border-radius: 5px;
+  color: var(--white);
+  font-weight: bold;
 `;

@@ -8,10 +8,11 @@ import { Title, Text, Container, SmallText } from "./Stocks.styles";
 const params = {
   spaceBetween: 30,
   centeredSlides: true,
+  rebuildOnUpdate: true,
   autoplay: {
     delay: 2500,
-    disableOnInteraction: false
-  }
+    disableOnInteraction: false,
+  },
 };
 
 const Stocks = () => {
