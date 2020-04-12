@@ -3,47 +3,44 @@ import { FinanceContext } from "../../Context";
 import Swiper from "react-id-swiper";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 
-import { Title, Text, Container, SmallText } from "./Stocks.styles";
+import { Title, Text, Container, SmallText } from "../stocks/Stocks.styles";
 
 const params = {
   spaceBetween: 30,
   centeredSlides: true,
   rebuildOnUpdate: true,
   autoplay: {
-    delay: 2500,
+    delay: 1750,
     disableOnInteraction: false,
   },
 };
 
-const Stocks = () => {
-  const { stocks, stockChart, handleClick } = useContext(FinanceContext);
+const MostLoser = () => {
+  const { mostLoser, mostLoserChart, handleClick } = useContext(FinanceContext);
 
   return (
     <div>
-      {stockChart.length > 4 ? (
+      {mostLoserChart.length > 9 ? (
         <div>
-          <Title>Featured</Title>
+          <Title>Most Loser</Title>
           <Swiper {...params}>
-            {/* mapping two arrays */}
-            {stocks.map((stock, index) => {
-              // this will get the stocksChart in spesific index that stocks is
-              const stocksChart = stockChart[index];
-              // console.log(stockChart[index])
+            {mostLoser.map((stock, index) => {
+              const loserChart = mostLoserChart[index];
               return (
                 <Container
-                  onClick={() => handleClick(stock.symbol)}
-                  to={`${stock.symbol}`}
-                  key={stock.symbol}
+                  onClick={() => handleClick(stock.ticker)}
+                  to={`${stock.ticker}`}
+                  key={stock.ticker}
                 >
                   <div>
                     <Text style={{ marginBottom: "30px" }}>{stock.price}</Text>
                     <div>
-                      <Text>{stock.symbol}</Text>
-                      <SmallText>{stock.name}</SmallText>
+                      <Text>{stock.ticker}</Text>
+                      <SmallText>{stock.companyName}</SmallText>
                     </div>
                   </div>
                   <ResponsiveContainer>
-                    <LineChart data={stocksChart}>
+                    <LineChart data={loserChart}>
                       <Line
                         type="monotone"
                         dataKey="close"
@@ -62,4 +59,4 @@ const Stocks = () => {
   );
 };
 
-export default Stocks;
+export default MostLoser;

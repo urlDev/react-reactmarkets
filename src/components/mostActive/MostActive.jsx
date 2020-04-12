@@ -10,37 +10,49 @@ const params = {
   centeredSlides: true,
   rebuildOnUpdate: true,
   autoplay: {
-    delay: 1500,
+    delay: 2000,
     disableOnInteraction: false,
   },
 };
 
-const Crypto = () => {
-  const { crypto, cryptoChart, handleClick } = useContext(FinanceContext);
+const MostActive = () => {
+  const { mostActive, handleClick, mostActiveChart } = useContext(
+    FinanceContext
+  );
+
+  // mostActive.map((stock, index) => {
+  //   return console.log(
+  //     stock.ticker,
+  //     stock.price,
+  //     index,
+  //     mostActiveChart[index]
+  //   );
+  // });
 
   return (
-    <div>
-      {crypto ? (
-        <div>
-          <Title>Crypto</Title>
+    <>
+      {mostActiveChart.length > 9 ? (
+        <>
+          <Title>Most Active</Title>
           <Swiper {...params}>
-            {crypto.map((crypto, index) => {
-              const cryptosChart = cryptoChart[index];
+            {mostActive.map((stock, index) => {
+              const activeChart = mostActiveChart[index];
+              // console.log(`This is stock: ${stock.companyName}, This is index: ${index}` )
               return (
                 <Container
-                  onClick={() => handleClick(crypto.name)}
-                  to={`${crypto.name}`}
-                  key={crypto.ticker}
+                  onClick={() => handleClick(stock.ticker)}
+                  to={`${stock.ticker}`}
+                  key={stock.ticker}
                 >
                   <div>
-                    <Text style={{ marginBottom: "30px" }}>{crypto.price}</Text>
+                    <Text style={{ marginBottom: "30px" }}>{stock.price}</Text>
                     <div>
-                      <Text>{crypto.symbol}</Text>
-                      <SmallText>{crypto.name}</SmallText>
+                      <Text>{stock.ticker}</Text>
+                      <SmallText>{stock.companyName.slice(0, 20)}</SmallText>
                     </div>
                   </div>
                   <ResponsiveContainer>
-                    <LineChart data={cryptosChart}>
+                    <LineChart data={activeChart}>
                       <Line
                         type="monotone"
                         dataKey="close"
@@ -53,10 +65,10 @@ const Crypto = () => {
               );
             })}
           </Swiper>
-        </div>
+        </>
       ) : null}
-    </div>
+    </>
   );
 };
 
-export default Crypto;
+export default MostActive;

@@ -1,9 +1,9 @@
 import React from "react";
 
 import Stocks from "../stocks/Stocks";
-import Indexes from "../indexes/Indexes";
-import Crypto from "../crypto/Crypto";
-import Forex from "../forex/Forex";
+import MostActive from "../mostActive/MostActive";
+import MostGainer from "../mostGainer/MostGainer";
+import MostLoser from "../mostLoser/MostLoser";
 
 import { PageContainer, Background } from "./Home.styles";
 
@@ -13,9 +13,9 @@ const Home = () => {
       <Background />
       <PageContainer>
         <Stocks />
-        {/* <Indexes /> */}
-        <Crypto />
-        <Forex />
+        <MostActive/>
+        <MostGainer />
+        <MostLoser />
       </PageContainer>
     </>
   );

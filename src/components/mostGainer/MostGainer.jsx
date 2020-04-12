@@ -10,36 +10,39 @@ const params = {
   centeredSlides: true,
   rebuildOnUpdate: true,
   autoplay: {
-    delay: 2000,
-    disableOnInteraction: false
-  }
+    delay: 1500,
+    disableOnInteraction: false,
+  },
 };
 
-const Indexes = () => {
-  const { indexes, handleClick, indexChart } = useContext(FinanceContext);
+const MostGainer = () => {
+  const { mostGainer, mostGainerChart, handleClick } = useContext(
+    FinanceContext
+  );
 
   return (
     <div>
-      {indexes ? (
+      {mostGainerChart.length > 9 ? (
         <div>
-          <Title>Indexes</Title>
+          <Title>Most Gainer</Title>
           <Swiper {...params}>
-            {indexes.map(index => {
+            {mostGainer.map((stock, index) => {
+              const gainerChart = mostGainerChart[index];
               return (
                 <Container
-                  onClick={() => handleClick(index.indexName)}
-                  to={`${index.indexName}`}
-                  key={index.indexName}
+                  onClick={() => handleClick(stock.ticker)}
+                  to={`${stock.ticker}`}
+                  key={stock.ticker}
                 >
                   <div>
-                    <Text style={{ marginBottom: "30px" }}>{index.price}</Text>
+                    <Text style={{ marginBottom: "30px" }}>{stock.price}</Text>
                     <div>
-                      <Text>{index.ticker.slice(1)}</Text>
-                      <SmallText>{index.indexName}</SmallText>
+                      <Text>{stock.ticker}</Text>
+                      <SmallText>{stock.companyName}</SmallText>
                     </div>
                   </div>
                   <ResponsiveContainer>
-                    <LineChart data={indexChart}>
+                    <LineChart data={gainerChart}>
                       <Line
                         type="monotone"
                         dataKey="close"
@@ -58,4 +61,4 @@ const Indexes = () => {
   );
 };
 
-export default Indexes;
+export default MostGainer;

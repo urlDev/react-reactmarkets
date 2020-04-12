@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { Link } from "react-router-dom";
+
 export const Input = styled.input`
   border: none;
   background: none;
@@ -14,7 +16,7 @@ export const Input = styled.input`
     font-size: var(--Text);
     padding: 2px 0 2px 0;
     outline: none;
-    background:none;
+    background: none;
   }
   &:focus {
     opacity: 1;
@@ -31,7 +33,7 @@ export const SearchButton = styled.button`
   }
 `;
 
-export const ResultContainer = styled.div`
+export const ResultContainer = styled(Link)`
   height: 50px;
   background: var(--white);
   border-radius: 10px;
@@ -40,7 +42,6 @@ export const ResultContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 20px 0 20px;
-  margin-bottom:15px;
+  margin-bottom: 15px;
+  text-decoration: none;
 `;
-
-
