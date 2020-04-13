@@ -19,4 +19,8 @@ export const SubmitButton = styled.button`
     font-weight: bolder;
     font-size:var(--MidTitle);
     margin-top:30px;
+    transition: all 0.5s ease-in-out;
+    &:hover {
+      background: var(--purple);
+    }
 `

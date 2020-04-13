@@ -3,7 +3,7 @@ import { FinanceContext } from "../../Context";
 import Swiper from "react-id-swiper";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 
-import { Title, Text, Container, SmallText } from "./Stocks.styles";
+import { Title, Text, Container, SmallText, Percentage } from "./Stocks.styles";
 
 const params = {
   spaceBetween: 30,
@@ -42,16 +42,19 @@ const Stocks = () => {
                       <SmallText>{stock.name}</SmallText>
                     </div>
                   </div>
-                  <ResponsiveContainer>
-                    <LineChart data={stocksChart}>
-                      <Line
-                        type="monotone"
-                        dataKey="close"
-                        stroke="#1d2d44"
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
+                  <div>
+                    <ResponsiveContainer>
+                      <LineChart data={stocksChart}>
+                        <Line
+                          type="monotone"
+                          dataKey="close"
+                          stroke="#1d2d44"
+                          dot={false}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                    {/* <Percentage>{stock.changesPercentage}</Percentage> */}
+                  </div>
                 </Container>
               );
             })}

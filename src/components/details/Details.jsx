@@ -12,8 +12,26 @@ import {
   DetailsSmallText,
 } from "./Details.styles";
 
+export const Added = (
+  <i
+    className="fas fa-bookmark"
+    aria-hidden="true"
+    style={{ color: "#dabafd" }}
+  ></i>
+);
+
+export const Add = (
+  <i
+    className="far fa-bookmark"
+    aria-hidden="true"
+    style={{ color: "#dabafd" }}
+  ></i>
+);
+
 const Details = () => {
-  const { details, detailsChart } = useContext(FinanceContext);
+  const { details, detailsChart, addPortfolio, portfolio } = useContext(
+    FinanceContext
+  );
   //   const {
   //     price,
   //     companyName,
@@ -24,13 +42,26 @@ const Details = () => {
   //     sector,
   //     website,
   //   } = details[0].profile;
+
   return (
     <>
       {detailsChart[0] ? (
         <>
           <Background />
           <PageContainer>
-            <Title>{details[0].symbol}</Title>
+            <Title>
+              {details[0].symbol}
+              <span
+                onClick={() => addPortfolio(details)}
+                style={{ marginLeft: "10px" }}
+              >
+                {portfolio.some(
+                  (stock) => stock[0].symbol === details[0].symbol
+                )
+                  ? Added
+                  : Add}
+              </span>
+            </Title>
             <DetailsChartContainer>
               <TimeContainer>
                 <Time>5M</Time>

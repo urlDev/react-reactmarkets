@@ -13,7 +13,7 @@ const Profile = () => {
       <Background />
       <PageContainer>
         <Title>Sign In</Title>
-        <form onSubmit={handleClick} style={{ marginTop: "40px" }}>
+        <form onSubmit={handleClick} style={{ marginTop: "20px" }}>
           <Label htmlFor="email">Email</Label>
           <Input
             style={{ width: "100%" }}
@@ -40,7 +40,7 @@ const Profile = () => {
         </form>
 
         <Title style={{ marginTop: "80px" }}>Sign Up</Title>
-        <form onSubmit={handleClick} style={{ marginTop: "40px" }}>
+        <form onSubmit={handleClick} style={{ marginTop: "20px" }}>
           <Label htmlFor="name">Name</Label>
           <Input
             style={{ width: "100%" }}

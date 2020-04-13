@@ -21,6 +21,8 @@ class FinanceContextProvider extends Component {
       search: [],
       searchCompany: [],
       searchResults: [],
+      detailedChart: [],
+      portfolio: [],
     };
   }
 
@@ -242,6 +244,28 @@ class FinanceContextProvider extends Component {
     );
   };
 
+  // getDetailedChart = async ((5, 15, 30, 60)) => {
+  //   const response = await fetch(`https://financialmodelingprep.com/api/v3/historical-chart/5min/AAPL`)
+  // }
+
+  addPortfolio = (stock) => {
+    const { portfolio } = this.state;
+    let copyPortfolio = [...portfolio];
+    if (!portfolio.includes(stock)) {
+      copyPortfolio.push(stock);
+      this.setState({
+        portfolio: copyPortfolio,
+      });
+    } else {
+      copyPortfolio = copyPortfolio.filter(
+        (eachStock) => eachStock !== stock
+      );
+      this.setState({
+        portfolio: copyPortfolio,
+      });
+    }
+  };
+
   render() {
     return (
       <FinanceContext.Provider
@@ -250,6 +274,7 @@ class FinanceContextProvider extends Component {
           handleClick: this.handleClick,
           handleChange: this.handleChange,
           clearState: this.clearState,
+          addPortfolio: this.addPortfolio,
         }}
       >
         {this.props.children}
