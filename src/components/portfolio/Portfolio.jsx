@@ -29,13 +29,13 @@ const Portfolio = () => {
                 return (
                   <ResultContainer key={uuid()}>
                     <Text>
-                      {stock[0].symbol}
                       <span
                         onClick={() => addPortfolio(stock)}
-                        style={{ marginLeft: "10px" }}
+                        style={{ marginRight: "10px" }}
                       >
                         {portfolio.includes(stock) ? Added : Add}
                       </span>
+                      {stock[0].symbol}
                     </Text>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       <Text style={{ marginRight: "10px" }}>${price}</Text>

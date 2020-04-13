@@ -12,8 +12,14 @@ export const DetailsChartContainer = styled.div`
 `;
 
 export const Time = styled(Percentage)`
-  background: var(--purple);
-  // width: 30px;
+  background: var(--white);
+  color: var(--dark-blue);
+  cursor: pointer;
+  &:hover,
+  &.active {
+    background: var(--purple);
+    color: var(--white);
+  }
 `;
 
 export const TimeContainer = styled.div`
@@ -21,13 +27,13 @@ export const TimeContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  margin-bottom:20px;
+  margin-bottom: 20px;
 `;
 
 export const DetailsText = styled(Text)`
-    font-size: 15px;
-`
+  font-size: 15px;
+`;
 
 export const DetailsSmallText = styled(SmallText)`
-    font-size: 15px;
-`
+  font-size: 15px;
+`;

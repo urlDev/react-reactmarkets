@@ -23,6 +23,7 @@ class FinanceContextProvider extends Component {
       searchResults: [],
       detailedChart: [],
       portfolio: [],
+      active: false,
     };
   }
 
@@ -183,18 +184,19 @@ class FinanceContextProvider extends Component {
         details: [data],
       },
       () => {
-        this.getDetailsChart();
+        this.getDetailsChart("1hour");
       }
     );
   };
 
-  getDetailsChart = async () => {
+  getDetailsChart = async (time) => {
     const response = await fetch(
-      `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${this.state.details[0].symbol}`
+      `https://financialmodelingprep.com/api/v3/historical-chart/${time}/${this.state.details[0].symbol}`
     );
     const data = await response.json();
     this.setState({
       detailsChart: [data],
+      // active: !this.state.active,
     });
   };
 
@@ -257,9 +259,7 @@ class FinanceContextProvider extends Component {
         portfolio: copyPortfolio,
       });
     } else {
-      copyPortfolio = copyPortfolio.filter(
-        (eachStock) => eachStock !== stock
-      );
+      copyPortfolio = copyPortfolio.filter((eachStock) => eachStock !== stock);
       this.setState({
         portfolio: copyPortfolio,
       });
@@ -275,6 +275,7 @@ class FinanceContextProvider extends Component {
           handleChange: this.handleChange,
           clearState: this.clearState,
           addPortfolio: this.addPortfolio,
+          getDetailsChart: this.getDetailsChart,
         }}
       >
         {this.props.children}

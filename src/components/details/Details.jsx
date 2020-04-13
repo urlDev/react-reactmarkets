@@ -29,9 +29,14 @@ export const Add = (
 );
 
 const Details = () => {
-  const { details, detailsChart, addPortfolio, portfolio } = useContext(
-    FinanceContext
-  );
+  const {
+    details,
+    detailsChart,
+    addPortfolio,
+    portfolio,
+    getDetailsChart,
+    active,
+  } = useContext(FinanceContext);
   //   const {
   //     price,
   //     companyName,
@@ -64,10 +69,10 @@ const Details = () => {
             </Title>
             <DetailsChartContainer>
               <TimeContainer>
-                <Time>5M</Time>
-                <Time>15M</Time>
-                <Time>30M</Time>
-                <Time>1H</Time>
+                <Time onClick={() => getDetailsChart("5min")}>5M</Time>
+                <Time onClick={() => getDetailsChart("15min")}>15M</Time>
+                <Time onClick={() => getDetailsChart("30min")}>30M</Time>
+                <Time onClick={() => getDetailsChart("1hour")}>1H</Time>
               </TimeContainer>
 
               <ResponsiveContainer>
@@ -114,7 +119,7 @@ const Details = () => {
                   </td>
                   <td>
                     <DetailsSmallText>
-                      {details[0].profile.changesPercentage}
+                      {details[0].profile.changesPercentage.slice(1, -1)}
                     </DetailsSmallText>
                   </td>
                 </tr>
