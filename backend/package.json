@@ -1,0 +1,22 @@
+{
+    "name": "reactmarkets-backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "scripts": {
+        "start": "nodemon server.js"
+    },
+    "keywords": [],
+    "author": "Can Ural",
+    "license": "ISC",
+    "devDependencies": {
+        "nodemon": "^2.0.3"
+    },
+    "dependencies": {
+        "bcrypt-nodejs": "0.0.3",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "knex": "^0.20.14",
+        "pg": "^8.0.2"
+    }
+}

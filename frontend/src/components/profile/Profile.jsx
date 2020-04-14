@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { FinanceContext } from "../../Context";
 
 import { PageContainer, Background } from "../home/Home.styles";
@@ -7,13 +8,26 @@ import { Input } from "../search/Search.styles";
 import { Label, SubmitButton } from "./Profile.styles";
 
 const Profile = () => {
-  const { handleChange, handleClick } = useContext(FinanceContext);
+  let history = useHistory();
+  const [input, setInput] = useState({});
+
+  const handleChange = (event) =>
+    setInput({
+      ...input,
+      [event.target.name]: event.target.value,
+    });
+
+  const handleSubmit = (event) => {
+    console.log(input);
+    history.push("/");
+  };
+
   return (
     <>
       <Background />
       <PageContainer>
         <Title>Sign In</Title>
-        <form onSubmit={handleClick} style={{ marginTop: "20px" }}>
+        <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
           <Label htmlFor="email">Email</Label>
           <Input
             style={{ width: "100%" }}
@@ -40,7 +54,7 @@ const Profile = () => {
         </form>
 
         <Title style={{ marginTop: "80px" }}>Sign Up</Title>
-        <form onSubmit={handleClick} style={{ marginTop: "20px" }}>
+        <form style={{ marginTop: "20px" }}>
           <Label htmlFor="name">Name</Label>
           <Input
             style={{ width: "100%" }}

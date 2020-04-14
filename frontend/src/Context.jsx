@@ -30,6 +30,7 @@ class FinanceContextProvider extends Component {
   //  https://reactjs.org/docs/concurrent-mode-suspense.html
   // check this out if you need to modify fetches accordingly
   componentDidMount() {
+    this.getUsers();
     this.clearState();
     Promise.all([
       this.getStocks(),
@@ -38,6 +39,12 @@ class FinanceContextProvider extends Component {
       this.getLoser(),
     ]);
   }
+
+  getUsers = async () => {
+    const response = await fetch("http://localhost:3001");
+    const data = await response.json();
+    console.log(data);
+  };
 
   clearState = () => {
     this.setState({
