@@ -15,8 +15,7 @@ export const Time = styled(Percentage)`
   background: var(--white);
   color: var(--dark-blue);
   cursor: pointer;
-  &:hover,
-  &.active {
+  &:hover {
     background: var(--purple);
     color: var(--white);
   }

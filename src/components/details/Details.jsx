@@ -35,7 +35,8 @@ const Details = () => {
     addPortfolio,
     portfolio,
     getDetailsChart,
-    active,
+    activeIndex,
+    changeIndex,
   } = useContext(FinanceContext);
   //   const {
   //     price,
@@ -69,10 +70,42 @@ const Details = () => {
             </Title>
             <DetailsChartContainer>
               <TimeContainer>
-                <Time onClick={() => getDetailsChart("5min")}>5M</Time>
-                <Time onClick={() => getDetailsChart("15min")}>15M</Time>
-                <Time onClick={() => getDetailsChart("30min")}>30M</Time>
-                <Time onClick={() => getDetailsChart("1hour")}>1H</Time>
+                <Time
+                  onClick={() => {
+                    getDetailsChart("5min");
+                    changeIndex(0);
+                  }}
+                  className={activeIndex === 0 ? "clicked" : null}
+                >
+                  5M
+                </Time>
+                <Time
+                  onClick={() => {
+                    getDetailsChart("15min");
+                    changeIndex(1);
+                  }}
+                  className={activeIndex === 1 ? "clicked" : null}
+                >
+                  15M
+                </Time>
+                <Time
+                  onClick={() => {
+                    getDetailsChart("30min");
+                    changeIndex(2);
+                  }}
+                  className={activeIndex === 2 ? "clicked" : null}
+                >
+                  30M
+                </Time>
+                <Time
+                  onClick={() => {
+                    getDetailsChart("1hour");
+                    changeIndex(3);
+                  }}
+                  className={activeIndex === 3 ? "clicked" : null}
+                >
+                  1H
+                </Time>
               </TimeContainer>
 
               <ResponsiveContainer>
@@ -144,6 +177,9 @@ const Details = () => {
                       </DetailsSmallText>
                     ) : null}
                   </td>
+                </tr>
+                <tr>
+                  <DetailsText>Description</DetailsText>
                 </tr>
               </tbody>
             </table>

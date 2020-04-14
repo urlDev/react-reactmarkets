@@ -23,7 +23,7 @@ class FinanceContextProvider extends Component {
       searchResults: [],
       detailedChart: [],
       portfolio: [],
-      active: false,
+      activeIndex: 3,
     };
   }
 
@@ -39,7 +39,6 @@ class FinanceContextProvider extends Component {
     ]);
   }
 
-  // these dont need to be cleaned yet, but I will use it for sign in
   clearState = () => {
     this.setState({
       search: [],
@@ -200,6 +199,12 @@ class FinanceContextProvider extends Component {
     });
   };
 
+  changeIndex = (index) => {
+    this.setState({
+      activeIndex: index,
+    });
+  };
+
   searchStocks = async () => {
     const response = await fetch(
       `https://financialmodelingprep.com/api/v3/search?query=${this.state.search}&limit=15`
@@ -276,6 +281,7 @@ class FinanceContextProvider extends Component {
           clearState: this.clearState,
           addPortfolio: this.addPortfolio,
           getDetailsChart: this.getDetailsChart,
+          changeIndex: this.changeIndex,
         }}
       >
         {this.props.children}

@@ -10,7 +10,7 @@ import { StyledText } from "./Portfolio.styles";
 import { Added, Add } from "../details/Details";
 
 const Portfolio = () => {
-  const { portfolio, addPortfolio } = useContext(FinanceContext);
+  const { portfolio, addPortfolio, handleClick } = useContext(FinanceContext);
 
   return (
     <>
@@ -27,7 +27,11 @@ const Portfolio = () => {
             ? portfolio.map((stock) => {
                 const { changesPercentage, price } = stock[0].profile;
                 return (
-                  <ResultContainer key={uuid()}>
+                  <ResultContainer
+                    onClick={() => handleClick(stock[0].symbol)}
+                    to={`${stock.symbol}`}
+                    key={uuid()}
+                  >
                     <Text>
                       <span
                         onClick={() => addPortfolio(stock)}
