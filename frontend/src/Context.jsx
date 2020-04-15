@@ -24,6 +24,13 @@ class FinanceContextProvider extends Component {
       detailedChart: [],
       portfolio: [],
       activeIndex: 3,
+      user: {
+        id: "",
+        name: "",
+        email: "",
+        stocks: 0,
+        joined: "",
+      },
     };
   }
 
@@ -278,6 +285,18 @@ class FinanceContextProvider extends Component {
     }
   };
 
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        stocks: data.stocks,
+        joined: data.joined,
+      },
+    });
+  };
+
   render() {
     return (
       <FinanceContext.Provider
@@ -289,6 +308,7 @@ class FinanceContextProvider extends Component {
           addPortfolio: this.addPortfolio,
           getDetailsChart: this.getDetailsChart,
           changeIndex: this.changeIndex,
+          loadUser: this.loadUser,
         }}
       >
         {this.props.children}
