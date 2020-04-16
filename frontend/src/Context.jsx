@@ -37,21 +37,13 @@ class FinanceContextProvider extends Component {
   //  https://reactjs.org/docs/concurrent-mode-suspense.html
   // check this out if you need to modify fetches accordingly
   componentDidMount() {
-    this.getUsers();
     this.clearState();
-    Promise.all([
-      this.getStocks(),
-      this.getActive(),
-      this.getGainer(),
-      this.getLoser(),
-    ]);
-  }
 
-  getUsers = async () => {
-    const response = await fetch("http://localhost:3001");
-    const data = await response.json();
-    console.log(data);
-  };
+    this.getStocks();
+    this.getActive();
+    this.getGainer();
+    this.getLoser();
+  }
 
   clearState = () => {
     this.setState({
@@ -87,7 +79,6 @@ class FinanceContextProvider extends Component {
       },
       () => {
         this.getActiveCharts();
-        // console.log(this.state.mostActive);
       }
     );
   };
@@ -118,7 +109,7 @@ class FinanceContextProvider extends Component {
         mostLoser: data.mostLoserStock,
       },
       () => {
-        // this.getLoserCharts();
+        this.getLoserCharts();
       }
     );
   };
@@ -146,7 +137,7 @@ class FinanceContextProvider extends Component {
           mostActiveChart: [...this.state.mostActiveChart, data],
         },
         () => {
-          // console.log(this.state.mostActiveChart[0]);
+          // console.log(this.state.mostActiveChart);
           // console.log(`${index.ticker}, ${index.price}, ${this.state.mostActiveChart[0]}`)
           // this.state.mostActiveChart.map(chart => console.log(chart, index.ticker, index.price))
         }
@@ -297,6 +288,18 @@ class FinanceContextProvider extends Component {
     });
   };
 
+  signOut = () => {
+    this.setState({
+      user: {
+        id: "",
+        name: "",
+        email: "",
+        stocks: 0,
+        joined: "",
+      },
+    });
+  };
+
   render() {
     return (
       <FinanceContext.Provider
@@ -309,6 +312,7 @@ class FinanceContextProvider extends Component {
           getDetailsChart: this.getDetailsChart,
           changeIndex: this.changeIndex,
           loadUser: this.loadUser,
+          signOut: this.signOut,
         }}
       >
         {this.props.children}

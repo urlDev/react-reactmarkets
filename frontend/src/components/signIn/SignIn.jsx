@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { FinanceContext } from "../../Context";
 
 import { Title } from "../stocks/Stocks.styles";
 import { Input } from "../search/Search.styles";
@@ -8,6 +9,7 @@ import { Label, SubmitButton, AccountLink } from "../profile/Profile.styles";
 const SignIn = () => {
   let history = useHistory();
   const [input, setInput] = useState({});
+  const { loadUser } = useContext(FinanceContext);
 
   const handleChange = (event) =>
     setInput({
@@ -26,9 +28,10 @@ const SignIn = () => {
       }),
     })
       .then((response) => response.json())
-      .then((data) => {
-        if (data === "success") {
-          history.push("/");
+      .then((user) => {
+        if (user.id) {
+          loadUser(user);
+          // history.push("/");
         }
       });
   };

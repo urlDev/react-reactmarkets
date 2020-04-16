@@ -48,7 +48,9 @@ const MostActive = () => {
                     <Text style={{ marginBottom: "30px" }}>{stock.price}</Text>
                     <div>
                       <Text>{stock.ticker}</Text>
-                      <SmallText>{stock.companyName.slice(0, 20)}</SmallText>
+                      {stock.companyName ? (
+                        <SmallText>{stock.companyName.slice(0, 20)}</SmallText>
+                      ) : null}
                     </div>
                   </div>
                   <ResponsiveContainer>

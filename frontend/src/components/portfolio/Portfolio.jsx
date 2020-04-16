@@ -12,6 +12,7 @@ import { Added, Add } from "../details/Details";
 const Portfolio = () => {
   const { portfolio, addPortfolio, handleClick } = useContext(FinanceContext);
 
+  console.log(portfolio)
   return (
     <>
       <Background />
@@ -29,7 +30,7 @@ const Portfolio = () => {
                 return (
                   <ResultContainer
                     onClick={() => handleClick(stock[0].symbol)}
-                    to={`${stock.symbol}`}
+                    // to={`${stock.symbol}`}
                     key={uuid()}
                   >
                     <Text>

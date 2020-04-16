@@ -14,12 +14,6 @@ const db = knex({
   },
 });
 
-db.select("*")
-  .from("users")
-  .then((data) => {
-    console.log(data);
-  });
-
 const app = express();
 const port = 3001;
 
@@ -27,86 +21,78 @@ const port = 3001;
 app.use(express.json());
 app.use(cors());
 
-// we dont have database yet so we are creating it here as a variable
-const database = {
-  users: [
-    {
-      id: "123",
-      name: "Can",
-      email: "can@gmail.com",
-      password: "cookies",
-      stocks: 0,
-      joined: new Date(),
-    },
-    {
-      id: "124",
-      name: "Tiiu",
-      email: "tiiu@gmail.com",
-      password: "bananas",
-      stocks: 0,
-      joined: new Date(),
-    },
-  ],
-};
-
 app.get("/", (req, res) => {
-  res.send(database.users);
+  res.send(db.users);
 });
 
 app.post("/profile/signin", (req, res) => {
-  if (
-    req.body.email === database.users[0].email &&
-    req.body.password === database.users[0].password
-  ) {
-    res.json(database.users[0]);
-  } else {
-    res.status(400).json("error logging in");
-  }
+  db.select("email", "hash")
+    .where("email", "=", req.body.email)
+    .from("login")
+    .then((data) => {
+      const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
+      if (isValid) {
+        return db
+          .select("*")
+          .from("users")
+          .where("email", "=", req.body.email)
+          .then((user) => {
+            res.json(user[0]);
+          })
+          .catch((err) => res.status(400).json("Unable to get user"));
+      } else {
+        res.status(400).json("Wrong credentials");
+      }
+    })
+    .catch((err) => res.status(400).json("Wrong credentials"));
 });
 
 app.post("/profile/signup", (req, res) => {
   const { email, name, password } = req.body;
-  bcrypt.hash(password, null, null, function (err, hash) {
-    // console.log(hash);
-  });
-  db("users")
-    .insert({
-      email: email,
-      name: name,
-      joined: new Date(),
-    })
-    .then(console.log);
+  const hash = bcrypt.hashSync(password);
 
-  res.json(database.users[database.users.length - 1]);
+  db.transaction((trx) => {
+    trx
+      .insert({
+        hash: hash,
+        email: email,
+      })
+      .into("login")
+      .returning("email")
+      .then((loginEmail) => {
+        return trx("users")
+          .returning("*")
+          .insert({
+            email: loginEmail[0],
+            name: name,
+            joined: new Date(),
+          })
+          .then((user) => {
+            res.json(user[0]);
+          });
+      })
+      .then(trx.commit)
+      .catch(trx.rollback);
+  }).catch((err) => res.status(400).json("Unable to register"));
 });
 
 app.get("/profile/:id", (req, res) => {
   const { id } = req.params;
-  let found = false;
-  database.users.forEach((user) => {
-    if (user.id === id) {
-      found = true;
-      return res.json(user);
-    }
-  });
-  if (!found) {
-    res.json("No such user");
-  }
+  db.select("*")
+    .from("users")
+    .where({ id })
+    .then((user) => {
+      if (user.length) {
+        res.json(user[0]);
+      } else {
+        res.status(400).json("Not found");
+      }
+    })
+    .catch((err) => res.status(400).json("Error getting user"));
 });
 
 app.put("/portfolio", (req, res) => {
   const { id } = req.body;
-  let found = false;
-  database.users.forEach((user) => {
-    if (user.id === id) {
-      found = true;
-      user.stocks++;
-      return res.json(user.stocks);
-    }
-  });
-  if (!found) {
-    res.json("No such user");
-  }
 });
 
 app.listen(port, () => {
