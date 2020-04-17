@@ -12,6 +12,9 @@ export const Container = styled(Link)`
   background: var(--white);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 768px) {
+    margin-bottom: 3rem;
+  }
 `;
 
 export const Title = styled.h1`
@@ -21,6 +24,9 @@ export const Title = styled.h1`
   font-size: var(--BigTitle);
   color: var(--dark-blue);
   font-weight: 900;
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
 `;
 
 export const Text = styled.p`

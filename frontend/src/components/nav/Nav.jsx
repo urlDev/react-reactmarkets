@@ -6,27 +6,38 @@ import { NavContainer, StyledLink } from "./Nav.styles";
 const Nav = () => {
   const { clearState } = useContext(FinanceContext);
   return (
-    <NavContainer
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <StyledLink exact to="/" onClick={clearState}>
-        <i className="fas fa-home"></i>
+    <NavContainer>
+      <StyledLink
+        className="home responsiveMenuTabs"
+        exact
+        to="/"
+        onClick={clearState}
+      >
+        <i className="fas fa-home fa-fw"></i>
       </StyledLink>
 
-      <StyledLink to="/search" onClick={clearState}>
-        <i className="fas fa-search"></i>
+      <StyledLink
+        className="search responsiveMenuTabs"
+        to="/search"
+        onClick={clearState}
+      >
+        <i className="fas fa-search fa-fw"></i>
       </StyledLink>
 
-      <StyledLink to="/portfolio" onClick={clearState}>
-        <i className="fas fa-briefcase"></i>
+      <StyledLink
+        className="portfolio responsiveMenuTabs"
+        to="/portfolio"
+        onClick={clearState}
+      >
+        <i className="fas fa-briefcase fa-fw"></i>
       </StyledLink>
 
-      <StyledLink to="/profile" onClick={clearState}>
-        <i className="fas fa-user"></i>
+      <StyledLink
+        className="profile responsiveMenuTabs"
+        to="/profile"
+        onClick={clearState}
+      >
+        <i className="fas fa-user fa-fw"></i>
       </StyledLink>
     </NavContainer>
   );

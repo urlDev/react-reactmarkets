@@ -36,3 +36,12 @@ export const DetailsText = styled(Text)`
 export const DetailsSmallText = styled(SmallText)`
   font-size: 15px;
 `;
+
+export const ResponsiveDetailsPage = styled.div`
+  @media (min-width: 768px) {
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 0 20px;
+    margin-bottom: 10px;
+  }
+`;

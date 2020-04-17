@@ -10,21 +10,29 @@ import TopNav from "./components/topNav/TopNav";
 
 import { Switch, Route } from "react-router-dom";
 
+import { AppContainer, TopNavAppContainer, MidGradientDiv } from "./App.styles";
+
 import FinanceContextProvider from "./Context.jsx";
 
 function App() {
   return (
     <>
       <FinanceContextProvider>
-        <TopNav />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/search" component={Search} />
-          <Route path="/portfolio" component={Portfolio} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/:name" component={Details} />
-        </Switch>
-        <Nav />
+        <TopNavAppContainer>
+          <TopNav />
+        </TopNavAppContainer>
+
+        <AppContainer>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/search" component={Search} />
+            <Route path="/portfolio" component={Portfolio} />
+            <Route path="/profile" component={Profile} />
+            <Route path="/:name" component={Details} />
+          </Switch>
+          <Nav />
+        </AppContainer>
+        <MidGradientDiv />
       </FinanceContextProvider>
     </>
   );

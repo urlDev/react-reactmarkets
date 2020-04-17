@@ -7,11 +7,24 @@ import { Title, Text, Container, SmallText } from "../stocks/Stocks.styles";
 
 const params = {
   spaceBetween: 30,
-  centeredSlides: true,
-  rebuildOnUpdate: true,
   autoplay: {
-    delay: 2000,
+    delay: 2300,
     disableOnInteraction: false,
+  },
+  rebuildOnUpdate: true,
+  breakpoints: {
+    1150: {
+      slidesPerView: 3,
+      spaceBetween: 30,
+    },
+    768: {
+      slidesPerView: 2,
+      spaceBetween: 30,
+    },
+    320: {
+      slidesPerView: 1,
+      spaceBetween: 30,
+    },
   },
 };
 
@@ -49,11 +62,13 @@ const MostActive = () => {
                     <div>
                       <Text>{stock.ticker}</Text>
                       {stock.companyName ? (
-                        <SmallText>{stock.companyName.slice(0, 20)}</SmallText>
+                        <SmallText>
+                          {stock.companyName.split(" ").slice(0, 2).join(" ")}
+                        </SmallText>
                       ) : null}
                     </div>
                   </div>
-                  <ResponsiveContainer>
+                  <ResponsiveContainer width={180}>
                     <LineChart data={activeChart}>
                       <Line
                         type="monotone"

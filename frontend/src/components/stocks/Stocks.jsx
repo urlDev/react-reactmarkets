@@ -7,11 +7,24 @@ import { Title, Text, Container, SmallText, Percentage } from "./Stocks.styles";
 
 const params = {
   spaceBetween: 30,
-  centeredSlides: true,
-  rebuildOnUpdate: true,
   autoplay: {
-    delay: 2500,
+    delay: 2000,
     disableOnInteraction: false,
+  },
+  rebuildOnUpdate: true,
+  breakpoints: {
+    1150: {
+      slidesPerView: 3,
+      spaceBetween: 30,
+    },
+    768: {
+      slidesPerView: 2,
+      spaceBetween: 30,
+    },
+    320: {
+      slidesPerView: 1,
+      spaceBetween: 30,
+    },
   },
 };
 
@@ -26,9 +39,8 @@ const Stocks = () => {
           <Swiper {...params}>
             {/* mapping two arrays */}
             {stocks.map((stock, index) => {
-              // this will get the stocksChart in spesific index that stocks is
+              // this will get the stocksChart in specific index that stocks is
               const stocksChart = stockChart[index];
-              // console.log(stockChart[index])
               return (
                 <Container
                   onClick={() => handleClick(stock.symbol)}
@@ -39,11 +51,15 @@ const Stocks = () => {
                     <Text style={{ marginBottom: "30px" }}>{stock.price}</Text>
                     <div>
                       <Text>{stock.symbol}</Text>
-                      <SmallText>{stock.name}</SmallText>
+                      {stock.name ? (
+                        <SmallText>
+                          {stock.name.split(" ").slice(0, 2).join(" ")}
+                        </SmallText>
+                      ) : null}
                     </div>
                   </div>
-                  <div>
-                    <ResponsiveContainer>
+                  <>
+                    <ResponsiveContainer width={180}>
                       <LineChart data={stocksChart}>
                         <Line
                           type="monotone"
@@ -54,7 +70,7 @@ const Stocks = () => {
                       </LineChart>
                     </ResponsiveContainer>
                     {/* <Percentage>{stock.changesPercentage}</Percentage> */}
-                  </div>
+                  </>
                 </Container>
               );
             })}

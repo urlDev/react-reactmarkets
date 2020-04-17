@@ -36,9 +36,17 @@ table {
     border-spacing: 0 10px;
     width: 100%;
     margin-top: 30px;
+    @media (min-width: 768px) {
+        margin-top: 0;
+    }
 }
 
 .clicked {
     background: var(--purple) !important;
     color: var(--white) !important;
+}
+
+.responsiveMenuTabs {
+    font-family: var(--Montserrat);
+    font-weight: 400;
 }
