@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    // ****** colors
+    --white: #ffff;
+    --dark-blue: #1d2d44;
+    --purple: #6e7bfb;
+    --pink: #dabafd;
+    --blue: #3e5c76;
+    --green: #009750;
+    --light-blue: rgba(156, 252, 247, 1);
+    //********* fonts
+    --Montserrat: "Montserrat", sans-serif;
+    --Mukta: "Mukta", sans-serif;
+    --Raleway: "Raleway", sans-serif;
+    // ********** font sizes
+    --BigTitle: 1.8rem;
+    --MidTitle: 1.2rem;
+    --Text: 0.8rem;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+.swiper-container {
+    overflow: visible;
+}
+
+table {
+    border-spacing: 0 10px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.clicked {
+    background: var(--purple) !important;
+    color: var(--white) !important;
+}
+
+.responsiveMenuTabs {
+    font-family: var(--Montserrat);
+    font-weight: 400;
+}
+
+.details {
+    @media (min-width: 768px) {
+        width: 85%;
+        margin: 0 auto;
+    }
+    @media (min-width: 1024.1px) {
+        width: 80%;
+    }
+}
+
+.main {
+    height: 198px;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: var(--dark-blue);
+    box-shadow: 0 0 1px var(--blue);
+}
