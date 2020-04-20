@@ -12,6 +12,7 @@ const Nav = () => {
         exact
         to="/"
         onClick={clearState}
+        aria-label="Home menu"
       >
         <i className="fas fa-home fa-fw"></i>
       </StyledLink>
@@ -20,6 +21,7 @@ const Nav = () => {
         className="search responsiveMenuTabs"
         to="/search"
         onClick={clearState}
+        aria-label="Search menu"
       >
         <i className="fas fa-search fa-fw"></i>
       </StyledLink>
@@ -28,6 +30,7 @@ const Nav = () => {
         className="portfolio responsiveMenuTabs"
         to="/portfolio"
         onClick={clearState}
+        aria-label="Portfolio menu"
       >
         <i className="fas fa-briefcase fa-fw"></i>
       </StyledLink>
@@ -36,6 +39,7 @@ const Nav = () => {
         className="profile responsiveMenuTabs"
         to="/profile"
         onClick={clearState}
+        aria-label="Profile menu"
       >
         <i className="fas fa-user fa-fw"></i>
       </StyledLink>

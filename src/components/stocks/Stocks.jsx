@@ -4,7 +4,7 @@ import Swiper from "react-id-swiper";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 
 import { Loading } from "../../App.styles";
-import { Title, Text, Container, SmallText, Percentage } from "./Stocks.styles";
+import { Title, Text, Container, SmallText} from "./Stocks.styles";
 
 const params = {
   spaceBetween: 30,
@@ -58,7 +58,7 @@ const Stocks = () => {
                         </SmallText>
                       ) : null}
                     </div>
-                  </div>
+                  </div> 
                   <>
                     <ResponsiveContainer width={180}>
                       <LineChart data={stocksChart}>
@@ -70,7 +70,6 @@ const Stocks = () => {
                         />
                       </LineChart>
                     </ResponsiveContainer>
-                    {/* <Percentage>{stock.changesPercentage}</Percentage> */}
                   </>
                 </Container>
               );
