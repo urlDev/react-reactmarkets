@@ -5,12 +5,13 @@ import { FinanceContext } from "../../Context";
 import SignIn from "../signIn/SignIn";
 import SignUp from "../signUp/SignUp";
 
-import { Title } from "../stocks/Stocks.styles";
+import { Loading } from "../../App.styles";
+import { Title, Text, Container, SmallText } from "../stocks/Stocks.styles";
 import { PageContainer, Background } from "../home/Home.styles";
 import { StyledText } from "../portfolio/Portfolio.styles";
 
 const Profile = () => {
-  const { user } = useContext(FinanceContext);
+  const { user, news } = useContext(FinanceContext);
 
   return (
     <>
@@ -20,6 +21,22 @@ const Profile = () => {
           <>
             <Title>Welcome, {user.displayName}!</Title>
             <StyledText>What would you like to do?</StyledText>
+            {news ? (
+              news.flat(Infinity).map((news) => {
+                return (
+                  <Container>
+                    <Text>{news.title}</Text>
+                    <SmallText>{news.description}</SmallText>
+                  </Container>
+                );
+              })
+            ) : (
+              <Loading className="main">
+                <Text>
+                  Add stocks to your portfolio, to see news about them!
+                </Text>
+              </Loading>
+            )}
           </>
         ) : (
           <Switch>

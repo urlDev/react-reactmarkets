@@ -1,11 +1,10 @@
 import React, { Component, createContext } from "react";
-
 import {
   auth,
   createUserProfileDocument,
 } from "./components/firebase/firebase.utils";
-
 import { Persist } from "react-persist";
+require("dotenv").config();
 
 export const FinanceContext = createContext();
 
@@ -34,6 +33,7 @@ class FinanceContextProvider extends Component {
       activeIndex: 3,
       isTablet: false,
       user: null,
+      news: [],
     };
   }
 
@@ -66,6 +66,12 @@ class FinanceContextProvider extends Component {
     });
     // to get the size of the window, for responsive components
     window.addEventListener("resize", this.updateProps);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.portfolio !== this.state.portfolio) {
+      this.getNewsProfile();
+    }
   }
 
   componentWillUnmount() {
@@ -206,11 +212,17 @@ class FinanceContextProvider extends Component {
   //   }
   //  mostActiveChart: [...this.state.mostActiveChart, [data, index] ],
   // })
+  // let beforeState = [];
+  // beforeState = [...beforeState, [data, index]];
+  // beforeState = beforeState.sort(function (a, b) {
+  //   console.log(a[0][1] - b[0][1]);
+  // });
+  // console.log(beforeState);
 
   getActiveCharts = () => {
     const signal = this.signal;
     try {
-      this.state.mostActive.map(async (stock) => {
+      this.state.mostActive.map(async (stock, index) => {
         const response = await fetch(
           `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.ticker}`,
           { signal }
@@ -301,7 +313,7 @@ class FinanceContextProvider extends Component {
       const data = await response.json();
       this.setState({
         detailsChart: [data],
-      }, () => {console.log(this.state.detailsChart)});
+      });
     } catch (error) {
       this.abortFunc(error);
     }
@@ -376,14 +388,44 @@ class FinanceContextProvider extends Component {
     let copyPortfolio = [...portfolio];
     if (!portfolio.includes(stock)) {
       copyPortfolio.push(stock);
-      this.setState({
-        portfolio: copyPortfolio,
-      }, () => {console.log(this.state.portfolio)});
+      this.setState(
+        {
+          portfolio: copyPortfolio,
+        },
+        () => {
+          console.log(this.state.portfolio);
+        }
+      );
     } else {
       copyPortfolio = copyPortfolio.filter((eachStock) => eachStock !== stock);
       this.setState({
         portfolio: copyPortfolio,
       });
+    }
+  };
+
+  getNewsProfile = () => {
+    const signal = this.signal;
+    try {
+      if (this.state.portfolio.length) {
+        this.state.portfolio.map(async (stock) => {
+          const response = await fetch(
+            `https://api.currentsapi.services/v1/search?keywords=${stock[0].profile.companyName
+              .split(" ")
+              .slice(0, 1)
+              .join(
+                " "
+              )}&language=en&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`,
+            { signal }
+          );
+          const data = await response.json();
+          this.setState({
+            news: [...this.state.news, data.news],
+          });
+        });
+      }
+    } catch (error) {
+      this.abortFunc(error);
     }
   };
 
@@ -398,6 +440,7 @@ class FinanceContextProvider extends Component {
           addPortfolio: this.addPortfolio,
           getDetailsChart: this.getDetailsChart,
           changeIndex: this.changeIndex,
+          getNewsProfile: this.getNewsProfile,
         }}
       >
         {this.props.children}

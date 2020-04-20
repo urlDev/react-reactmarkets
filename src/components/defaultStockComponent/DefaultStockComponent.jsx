@@ -8,8 +8,6 @@ import { Text, Container, SmallText } from "../stocks/Stocks.styles";
 const DefaultStockComponent = ({stock, stockChart}) => {
   const { handleClick } = useContext(FinanceContext);
 
-  console.log(typeof stock);
-
   const params = {
     spaceBetween: 30,
     autoplay: {

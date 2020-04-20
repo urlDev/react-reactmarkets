@@ -189,13 +189,15 @@ const Details = () => {
                   <td>
                     {details[0].profile.website ? (
                       <DetailsSmallText>
-                        {details[0].profile.website.slice(11)}
+                        {details[0].profile.website}
                       </DetailsSmallText>
                     ) : null}
                   </td>
                 </tr>
                 <tr>
-                  <DetailsText>Description</DetailsText>
+                  <td>
+                    <DetailsText>Description</DetailsText>
+                  </td>
                 </tr>
               </tbody>
             </table>

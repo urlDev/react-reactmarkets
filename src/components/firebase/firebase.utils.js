@@ -4,12 +4,12 @@ import "firebase/auth";
 require("dotenv").config();
 
 const config = {
-  apiKey: "AIzaSyCPApeqxggzLI8sdYNIiXU3yyUzsxfUVaY",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "reactmarkets.firebaseapp.com",
   databaseURL: "https://reactmarkets.firebaseio.com",
   projectId: "reactmarkets",
   storageBucket: "reactmarkets.appspot.com",
-  appId: "1:874440164899:web:4fb1e73a656e89127ed396",
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 firebase.initializeApp(config);
