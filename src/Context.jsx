@@ -34,6 +34,8 @@ class FinanceContextProvider extends Component {
       isTablet: false,
       user: null,
       news: [],
+      visible: 10,
+      isMarketOpen: false,
     };
   }
 
@@ -46,6 +48,7 @@ class FinanceContextProvider extends Component {
     this.getActive();
     this.getGainer();
     this.getLoser();
+    this.getWorkingHours();
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
@@ -89,6 +92,7 @@ class FinanceContextProvider extends Component {
       searchResults: [],
       searchCompany: [],
       activeIndex: 3,
+      visible: 10,
     });
   };
 
@@ -204,7 +208,7 @@ class FinanceContextProvider extends Component {
     }
   };
 
-  // this fethes the chart data by index then you can sort them
+  // this fetches the chart data by index then you can sort them
   // this.setState({
   //   mostActiveChart: {
   //     data,
@@ -391,9 +395,6 @@ class FinanceContextProvider extends Component {
       this.setState(
         {
           portfolio: copyPortfolio,
-        },
-        () => {
-          console.log(this.state.portfolio);
         }
       );
     } else {
@@ -413,9 +414,9 @@ class FinanceContextProvider extends Component {
             `https://api.currentsapi.services/v1/search?keywords=${stock[0].profile.companyName
               .split(" ")
               .slice(0, 1)
-              .join(
-                " "
-              )}&language=en&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`,
+              .join(" ")}&language=en&apiKey=${
+              process.env.REACT_APP_NEWS_API_KEY
+            }`,
             { signal }
           );
           const data = await response.json();
@@ -423,7 +424,33 @@ class FinanceContextProvider extends Component {
             news: [...this.state.news, data.news],
           });
         });
+      } else {
+        this.setState({
+          news: [],
+        });
       }
+    } catch (error) {
+      this.abortFunc(error);
+    }
+  };
+
+  loadMore = () => {
+    this.setState((prev) => {
+      return { visible: prev.visible + 10 };
+    });
+  };
+
+  getWorkingHours = async () => {
+    const signal = this.signal;
+    try {
+      const response = await fetch(
+        "https://financialmodelingprep.com/api/v3/is-the-market-open",
+        { signal }
+      );
+      const data = await response.json();
+      this.setState({
+        isMarketOpen: data.isTheStockMarketOpen,
+      });
     } catch (error) {
       this.abortFunc(error);
     }
@@ -441,6 +468,7 @@ class FinanceContextProvider extends Component {
           getDetailsChart: this.getDetailsChart,
           changeIndex: this.changeIndex,
           getNewsProfile: this.getNewsProfile,
+          loadMore: this.loadMore,
         }}
       >
         {this.props.children}

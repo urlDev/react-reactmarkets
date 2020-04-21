@@ -1,17 +1,20 @@
 import React, { useContext } from "react";
 import { Switch, Route } from "react-router-dom";
 import { FinanceContext } from "../../Context";
+import uuid from "react-uuid";
 
 import SignIn from "../signIn/SignIn";
 import SignUp from "../signUp/SignUp";
 
-import { Loading } from "../../App.styles";
-import { Title, Text, Container, SmallText } from "../stocks/Stocks.styles";
+import { Title, Text, SmallText } from "../stocks/Stocks.styles";
 import { PageContainer, Background } from "../home/Home.styles";
 import { StyledText } from "../portfolio/Portfolio.styles";
+import { NewsContainer, News, SubmitButton} from "./Profile.styles";
 
 const Profile = () => {
-  const { user, news } = useContext(FinanceContext);
+  const { user, news, portfolio, loadMore, visible } = useContext(
+    FinanceContext
+  );
 
   return (
     <>
@@ -20,22 +23,36 @@ const Profile = () => {
         {user ? (
           <>
             <Title>Welcome, {user.displayName}!</Title>
-            <StyledText>What would you like to do?</StyledText>
-            {news ? (
-              news.flat(Infinity).map((news) => {
-                return (
-                  <Container>
-                    <Text>{news.title}</Text>
-                    <SmallText>{news.description}</SmallText>
-                  </Container>
-                );
-              })
+            {portfolio.length ? (
+              <StyledText>Here are the news about your portfolio.</StyledText>
             ) : (
-              <Loading className="main">
-                <Text>
-                  Add stocks to your portfolio, to see news about them!
-                </Text>
-              </Loading>
+              <StyledText>Add stocks to your portfolio to see news.</StyledText>
+            )}
+            <NewsContainer>
+              {news &&
+                news
+                  .flat(Infinity)
+                  .slice(0, visible)
+                  .map((news) => {
+                    return (
+                      <News
+                        key={uuid()}
+                        href={news.url}
+                        target="_blank"
+                        rel="noopener"
+                        className="fade-in"
+                      >
+                        <Text>{news.title}</Text>
+                        <SmallText>
+                          {news.description.split(" ").slice(0, 15).join(" ")}
+                          ...
+                        </SmallText>
+                      </News>
+                    );
+                  })}
+            </NewsContainer>
+            {visible < news.flat(Infinity).length && (
+              <SubmitButton onClick={loadMore} style={{marginBottom:"20px"}}>Load More</SubmitButton>
             )}
           </>
         ) : (

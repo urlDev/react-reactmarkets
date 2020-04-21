@@ -26,33 +26,36 @@ const Portfolio = () => {
             ? portfolio.map((stock) => {
                 const { changesPercentage, price } = stock[0].profile;
                 return (
-                  <ResultContainer
-                    onClick={() => handleClick(stock[0].symbol)}
-                    // to={`${stock.symbol}`}
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
                     key={uuid()}
                   >
-                    <Text>
-                      <span
-                        onClick={() => addPortfolio(stock)}
-                        style={{ marginRight: "10px" }}
-                      >
-                        {portfolio.includes(stock) ? Added : Add}
-                      </span>
-                      {stock[0].symbol}
-                    </Text>
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      <Text style={{ marginRight: "10px" }}>${price}</Text>
-                      {changesPercentage.slice(1, -2) > 0 ? (
-                        <Percentage>
-                          {changesPercentage.slice(1, -1)}
-                        </Percentage>
-                      ) : (
-                        <Percentage style={{ background: "#C60808" }}>
-                          {changesPercentage.slice(1, -1)}
-                        </Percentage>
-                      )}
-                    </div>
-                  </ResultContainer>
+                    <span
+                      onClick={() => addPortfolio(stock)}
+                      style={{ marginRight: "10px", cursor: "pointer", fontSize:"2rem"}}
+                    >
+                      {portfolio.includes(stock) ? Added : Add}
+                    </span>
+                    <ResultContainer
+                      onClick={() => handleClick(stock[0].symbol)}
+                      to={`${stock[0].symbol}`}
+                      key={uuid()}
+                    >
+                      <Text>{stock[0].symbol}</Text>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <Text style={{ marginRight: "10px" }}>${price}</Text>
+                        {changesPercentage.slice(1, -2) > 0 ? (
+                          <Percentage>
+                            {changesPercentage.slice(1, -1)}
+                          </Percentage>
+                        ) : (
+                          <Percentage style={{ background: "#C60808" }}>
+                            {changesPercentage.slice(1, -1)}
+                          </Percentage>
+                        )}
+                      </div>
+                    </ResultContainer>
+                  </div>
                 );
               })
             : null}

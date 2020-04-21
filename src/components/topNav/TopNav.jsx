@@ -7,7 +7,7 @@ import { TopNavContainer } from "./TopNav.styles";
 import { Text } from "../stocks/Stocks.styles";
 
 const TopNav = () => {
-  const { user } = useContext(FinanceContext);
+  const { user, isMarketOpen } = useContext(FinanceContext);
 
   return (
     <TopNavContainer>
@@ -31,10 +31,15 @@ const TopNav = () => {
             Sign Out
           </Text>
         ) : null}
-
-        <h1>
-          <i className="fas fa-bell"></i>
-        </h1>
+        {isMarketOpen ? (
+          <h1 title="Market is open">
+            <i className="fas fa-bell"></i>
+          </h1>
+        ) : (
+          <h1 title="Market is closed">
+            <i className="fas fa-bell-slash"></i>
+          </h1>
+        )}
       </div>
     </TopNavContainer>
   );

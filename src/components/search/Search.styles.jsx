@@ -47,4 +47,5 @@ export const ResultContainer = styled(Link)`
   padding: 0 20px 0 20px;
   margin-bottom: 15px;
   text-decoration: none;
+  width: 95%;
 `;

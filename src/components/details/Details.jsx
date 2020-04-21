@@ -12,7 +12,7 @@ import {
 
 import { Loading } from "../../App.styles";
 import { PageContainer, Background } from "../home/Home.styles";
-import { Title, Text } from "../stocks/Stocks.styles";
+import { Title } from "../stocks/Stocks.styles";
 import {
   DetailsChartContainer,
   Time,
@@ -210,9 +210,12 @@ const Details = () => {
           </PageContainer>
         </>
       ) : (
-        <Loading className="details">
-          <Text>Loading...</Text>
-        </Loading>
+        <>
+          <Background />
+          <Loading className="details">
+            <Title>Loading...</Title>
+          </Loading>
+        </>
       )}
     </>
   );
