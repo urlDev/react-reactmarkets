@@ -50,6 +50,10 @@ class FinanceContextProvider extends Component {
     this.getLoser();
     this.getWorkingHours();
 
+    this.setState({
+      portfolio: []
+    })
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
@@ -296,7 +300,7 @@ class FinanceContextProvider extends Component {
       const data = await response.json();
       this.setState(
         {
-          details: [data],
+          details: data,
         },
         () => {
           this.getDetailsChart("1hour");
@@ -311,7 +315,7 @@ class FinanceContextProvider extends Component {
     const signal = this.signal;
     try {
       const response = await fetch(
-        `https://financialmodelingprep.com/api/v3/historical-chart/${time}/${this.state.details[0].symbol}`,
+        `https://financialmodelingprep.com/api/v3/historical-chart/${time}/${this.state.details.symbol}`,
         { signal }
       );
       const data = await response.json();
@@ -390,7 +394,7 @@ class FinanceContextProvider extends Component {
   addPortfolio = (stock) => {
     const { portfolio } = this.state;
     let copyPortfolio = [...portfolio];
-    if (!portfolio.includes(stock)) {
+    if (!portfolio.some(addedStock => addedStock.symbol === stock.symbol)) {
       copyPortfolio.push(stock);
       this.setState(
         {
@@ -398,7 +402,7 @@ class FinanceContextProvider extends Component {
         }
       );
     } else {
-      copyPortfolio = copyPortfolio.filter((eachStock) => eachStock !== stock);
+      copyPortfolio = copyPortfolio.filter((eachStock) => eachStock.symbol !== stock.symbol);
       this.setState({
         portfolio: copyPortfolio,
       });
@@ -407,11 +411,12 @@ class FinanceContextProvider extends Component {
 
   getNewsProfile = () => {
     const signal = this.signal;
+    const { portfolio, news } = this.state;
     try {
-      if (this.state.portfolio.length) {
-        this.state.portfolio.map(async (stock) => {
+      if (portfolio.length) {
+        portfolio.map(async (stock) => {
           const response = await fetch(
-            `https://api.currentsapi.services/v1/search?keywords=${stock[0].profile.companyName
+            `https://api.currentsapi.services/v1/search?keywords=${stock.profile.companyName
               .split(" ")
               .slice(0, 1)
               .join(" ")}&language=en&apiKey=${
@@ -421,7 +426,7 @@ class FinanceContextProvider extends Component {
           );
           const data = await response.json();
           this.setState({
-            news: [...this.state.news, data.news],
+            news: [...news, data.news],
           });
         });
       } else {

@@ -56,14 +56,12 @@ const Details = () => {
           <Background />
           <PageContainer>
             <Title>
-              {details[0].symbol}
+              {details.symbol}
               <span
                 onClick={() => addPortfolio(details)}
                 style={{ marginLeft: "10px" }}
               >
-                {portfolio.some(
-                  (stock) => stock[0].symbol === details[0].symbol
-                )
+                {portfolio.some(stock => stock.symbol === details.symbol)
                   ? Added
                   : Add}
               </span>
@@ -148,7 +146,7 @@ const Details = () => {
                   </td>
                   <td>
                     <DetailsSmallText>
-                      {details[0].profile.companyName}
+                      {details.profile.companyName}
                     </DetailsSmallText>
                   </td>
                 </tr>
@@ -158,7 +156,7 @@ const Details = () => {
                   </td>
                   <td>
                     <DetailsSmallText>
-                      {details[0].profile.price}
+                      {details.profile.price}
                     </DetailsSmallText>
                   </td>
                 </tr>
@@ -168,7 +166,7 @@ const Details = () => {
                   </td>
                   <td>
                     <DetailsSmallText>
-                      {details[0].profile.changesPercentage.slice(1, -1)}
+                      {details.profile.changesPercentage.slice(1, -1)}
                     </DetailsSmallText>
                   </td>
                 </tr>
@@ -178,7 +176,7 @@ const Details = () => {
                   </td>
                   <td>
                     <DetailsSmallText>
-                      {details[0].profile.exchange}
+                      {details.profile.exchange}
                     </DetailsSmallText>
                   </td>
                 </tr>
@@ -187,9 +185,9 @@ const Details = () => {
                     <DetailsText>Website</DetailsText>
                   </td>
                   <td>
-                    {details[0].profile.website ? (
+                    {details.profile.website ? (
                       <DetailsSmallText>
-                        {details[0].profile.website}
+                        {details.profile.website}
                       </DetailsSmallText>
                     ) : null}
                   </td>
@@ -205,7 +203,7 @@ const Details = () => {
             <DetailsSmallText
               style={{ lineHeight: "20px", textAlign: "justify" }}
             >
-              {details[0].profile.description}
+              {details.profile.description}
             </DetailsSmallText>
           </PageContainer>
         </>

@@ -11,6 +11,7 @@ import { Added, Add } from "../details/Details";
 
 const Portfolio = () => {
   const { portfolio, addPortfolio, handleClick } = useContext(FinanceContext);
+
   return (
     <>
       <Background />
@@ -24,7 +25,7 @@ const Portfolio = () => {
         <div style={{ marginTop: "69px" }}>
           {portfolio.length > 0
             ? portfolio.map((stock) => {
-                const { changesPercentage, price } = stock[0].profile;
+                const { changesPercentage, price } = stock.profile;
                 return (
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
@@ -34,14 +35,14 @@ const Portfolio = () => {
                       onClick={() => addPortfolio(stock)}
                       style={{ marginRight: "10px", cursor: "pointer", fontSize:"2rem"}}
                     >
-                      {portfolio.includes(stock) ? Added : Add}
+                      {portfolio.some(newStock => newStock.symbol === stock.symbol) ? Added : Add}
                     </span>
                     <ResultContainer
-                      onClick={() => handleClick(stock[0].symbol)}
-                      to={`${stock[0].symbol}`}
+                      onClick={() => handleClick(stock.symbol)}
+                      to={`${stock.symbol}`}
                       key={uuid()}
                     >
-                      <Text>{stock[0].symbol}</Text>
+                      <Text>{stock.symbol}</Text>
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <Text style={{ marginRight: "10px" }}>${price}</Text>
                         {changesPercentage.slice(1, -2) > 0 ? (
