@@ -16,14 +16,12 @@ const MostActive = () => {
     <>
       <Title>Most Active</Title>
       {mostActiveChart.length > 9 ? (
-        <>
-          <Suspense fallback={<Loading>Loading...</Loading>}>
-            <DefaultStockComponent
-              stock={mostActive}
-              stockChart={mostActiveChart}
-            />
-          </Suspense>
-        </>
+        <Suspense fallback={<Loading>Loading...</Loading>}>
+          <DefaultStockComponent
+            stock={mostActive}
+            stockChart={mostActiveChart}
+          />
+        </Suspense>
       ) : (
         <Loading className="main">
           <Text>Loading...</Text>

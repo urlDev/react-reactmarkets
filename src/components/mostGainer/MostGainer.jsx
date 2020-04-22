@@ -16,14 +16,12 @@ const MostGainer = () => {
     <>
       <Title>Most Gainer</Title>
       {mostGainerChart.length > 9 ? (
-        <>
-          <Suspense fallback={<Loading>Loading...</Loading>}>
-            <DefaultStockComponent
-              stock={mostGainer}
-              stockChart={mostGainerChart}
-            />
-          </Suspense>
-        </>
+        <Suspense fallback={<Loading>Loading...</Loading>}>
+          <DefaultStockComponent
+            stock={mostGainer}
+            stockChart={mostGainerChart}
+          />
+        </Suspense>
       ) : (
         <Loading className="main">
           <Text>Loading...</Text>

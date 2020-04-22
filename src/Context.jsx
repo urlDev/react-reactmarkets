@@ -20,9 +20,13 @@ class FinanceContextProvider extends Component {
       mostGainer: [],
       mostLoser: [],
       name: "",
+      tempStock: [],
       stockChart: [],
+      tempActive: [],
       mostActiveChart: [],
+      tempGainer: [],
       mostGainerChart: [],
+      tempLoser: [],
       mostLoserChart: [],
       details: [],
       detailsChart: [],
@@ -51,8 +55,8 @@ class FinanceContextProvider extends Component {
     this.getWorkingHours();
 
     this.setState({
-      portfolio: []
-    })
+      portfolio: [],
+    });
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
@@ -192,18 +196,36 @@ class FinanceContextProvider extends Component {
     }
   };
 
+/* 
+On home page, every stock has their own chart, supposedly.
+But before making a temp state for each stock cases, they 
+belonged to other stocks because of async nature of data.
+So I first set data to a temp state, then used array methods
+to get them sorted. Then I had to use slice and flat to
+make them suitable for recharts library.
+Now charts match with their stocks. This "only" took my two 
+weeks. But I made it!!! 💪💪💪
+*/
   getStockCharts = () => {
     const signal = this.signal;
     try {
       if (this.state.stocks.length > 4) {
-        this.state.stocks.map(async (stock) => {
+        this.state.stocks.map(async (stock, index) => {
           const response = await fetch(
             `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.symbol}`,
             { signal }
           );
           const data = await response.json();
           this.setState({
-            stockChart: [...this.state.stockChart, data],
+            tempStock: [...this.state.tempStock, [data, index]],
+          });
+          let newState = [...this.state.tempStock];
+          newState = newState
+            .sort((a, b) => a[1] - b[1])
+            .map((stock) => stock.slice(0, 1))
+            .flat(1);
+          this.setState({
+            stockChart: newState,
           });
         });
       }
@@ -211,21 +233,6 @@ class FinanceContextProvider extends Component {
       this.abortFunc(error);
     }
   };
-
-  // this fetches the chart data by index then you can sort them
-  // this.setState({
-  //   mostActiveChart: {
-  //     data,
-  //     index,
-  //   }
-  //  mostActiveChart: [...this.state.mostActiveChart, [data, index] ],
-  // })
-  // let beforeState = [];
-  // beforeState = [...beforeState, [data, index]];
-  // beforeState = beforeState.sort(function (a, b) {
-  //   console.log(a[0][1] - b[0][1]);
-  // });
-  // console.log(beforeState);
 
   getActiveCharts = () => {
     const signal = this.signal;
@@ -237,7 +244,15 @@ class FinanceContextProvider extends Component {
         );
         const data = await response.json();
         this.setState({
-          mostActiveChart: [...this.state.mostActiveChart, data],
+          tempActive: [...this.state.tempActive, [data, index]],
+        });
+        let newState = [...this.state.tempActive];
+        newState = newState
+          .sort((a, b) => a[1] - b[1])
+          .map((stock) => stock.slice(0, 1))
+          .flat(1);
+        this.setState({
+          mostActiveChart: newState,
         });
       });
     } catch (error) {
@@ -248,14 +263,22 @@ class FinanceContextProvider extends Component {
   getGainerCharts = () => {
     const signal = this.signal;
     try {
-      this.state.mostGainer.map(async (stock) => {
+      this.state.mostGainer.map(async (stock, index) => {
         const response = await fetch(
           `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.ticker}`,
           { signal }
         );
         const data = await response.json();
         this.setState({
-          mostGainerChart: [...this.state.mostGainerChart, data],
+          tempGainer: [...this.state.tempGainer, [data, index]],
+        });
+        let newState = [...this.state.tempGainer];
+        newState = newState
+          .sort((a, b) => a[1] - b[1])
+          .map((stock) => stock.slice(0, 1))
+          .flat(1);
+        this.setState({
+          mostGainerChart: newState,
         });
       });
     } catch (error) {
@@ -266,14 +289,22 @@ class FinanceContextProvider extends Component {
   getLoserCharts = () => {
     const signal = this.signal;
     try {
-      this.state.mostLoser.map(async (stock) => {
+      this.state.mostLoser.map(async (stock, index) => {
         const response = await fetch(
           `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.ticker}`,
           { signal }
         );
         const data = await response.json();
         this.setState({
-          mostLoserChart: [...this.state.mostLoserChart, data],
+          tempLoser: [...this.state.tempLoser, [data, index]],
+        });
+        let newState = [...this.state.tempLoser];
+        newState = newState
+          .sort((a, b) => a[1] - b[1])
+          .map((stock) => stock.slice(0, 1))
+          .flat(1);
+        this.setState({
+          mostLoserChart: newState,
         });
       });
     } catch (error) {
@@ -394,15 +425,15 @@ class FinanceContextProvider extends Component {
   addPortfolio = (stock) => {
     const { portfolio } = this.state;
     let copyPortfolio = [...portfolio];
-    if (!portfolio.some(addedStock => addedStock.symbol === stock.symbol)) {
+    if (!portfolio.some((addedStock) => addedStock.symbol === stock.symbol)) {
       copyPortfolio.push(stock);
-      this.setState(
-        {
-          portfolio: copyPortfolio,
-        }
-      );
+      this.setState({
+        portfolio: copyPortfolio,
+      });
     } else {
-      copyPortfolio = copyPortfolio.filter((eachStock) => eachStock.symbol !== stock.symbol);
+      copyPortfolio = copyPortfolio.filter(
+        (eachStock) => eachStock.symbol !== stock.symbol
+      );
       this.setState({
         portfolio: copyPortfolio,
       });

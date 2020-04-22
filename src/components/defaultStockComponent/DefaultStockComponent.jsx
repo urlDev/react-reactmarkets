@@ -5,7 +5,7 @@ import Swiper from "react-id-swiper";
 
 import { Text, Container, SmallText } from "../stocks/Stocks.styles";
 
-const DefaultStockComponent = ({stock, stockChart}) => {
+const DefaultStockComponent = ({ stock, stockChart }) => {
   const { handleClick } = useContext(FinanceContext);
 
   const params = {
@@ -35,21 +35,22 @@ const DefaultStockComponent = ({stock, stockChart}) => {
     <Swiper {...params}>
       {stock.map((stock, index) => {
         const chart = stockChart[index];
+        const { companyName, ticker, price } = stock;
         return (
           <Container
-            onClick={() => handleClick(stock.ticker)}
-            to={`${stock.ticker}`}
-            key={stock.ticker}
+            onClick={() => handleClick(ticker)}
+            to={`${ticker}`}
+            key={ticker}
           >
             <div>
-              <Text style={{ marginBottom: "30px" }}>{stock.price}</Text>
+              <Text style={{ marginBottom: "30px" }}>{price}</Text>
               <div>
-                <Text>{stock.ticker}</Text>
-                {stock.companyName ? (
+                <Text>{ticker}</Text>
+                {companyName && (
                   <SmallText>
-                    {stock.companyName.split(" ").slice(0, 2).join(" ")}
+                    {companyName.split(" ").slice(0, 2).join(" ")}
                   </SmallText>
-                ) : null}
+                )}
               </div>
             </div>
             <ResponsiveContainer width={180}>
