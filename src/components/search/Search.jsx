@@ -32,6 +32,7 @@ const Search = () => {
                     onClick={() => handleClick(stock[0].symbol)}
                     to={`/${stock[0].symbol}`}
                     key={uuid()}
+                    style={{ width: "100%" }}
                   >
                     <Text>{stock[0].symbol}</Text>
                     <div style={{ display: "flex", alignItems: "center" }}>

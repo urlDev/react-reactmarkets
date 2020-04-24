@@ -42,7 +42,7 @@ const Profile = () => {
                         rel="noopener"
                         className="fade-in"
                       >
-                        <Text>{news.title}</Text>
+                        <Text>{news.title.split(" ").slice(0, 13).join(" ")}</Text>
                         <SmallText>
                           {news.description.split(" ").slice(0, 15).join(" ")}
                           ...

@@ -54,10 +54,6 @@ class FinanceContextProvider extends Component {
     this.getLoser();
     this.getWorkingHours();
 
-    this.setState({
-      portfolio: [],
-    });
-
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
@@ -81,7 +77,9 @@ class FinanceContextProvider extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.portfolio !== this.state.portfolio) {
-      this.getNewsProfile();
+      this.setState({ news: [] }, () => {
+        this.getNewsProfile();
+      });
     }
   }
 
@@ -196,7 +194,7 @@ class FinanceContextProvider extends Component {
     }
   };
 
-/* 
+  /* 
 On home page, every stock has their own chart, supposedly.
 But before making a temp state for each stock cases, they 
 belonged to other stocks because of async nature of data.
@@ -446,19 +444,30 @@ weeks. But I made it!!! 💪💪💪
     try {
       if (portfolio.length) {
         portfolio.map(async (stock) => {
-          const response = await fetch(
-            `https://api.currentsapi.services/v1/search?keywords=${stock.profile.companyName
-              .split(" ")
-              .slice(0, 1)
-              .join(" ")}&language=en&apiKey=${
-              process.env.REACT_APP_NEWS_API_KEY
-            }`,
-            { signal }
-          );
-          const data = await response.json();
-          this.setState({
-            news: [...news, data.news],
-          });
+          if (stock.profile.companyName) {
+            const response = await fetch(
+              `https://api.currentsapi.services/v1/search?keywords=${stock.profile.companyName
+                .split(" ")
+                .slice(0, 1)
+                .join(" ")}&language=en&apiKey=${
+                process.env.REACT_APP_NEWS_API_KEY
+              }`,
+              { signal }
+            );
+            const data = await response.json();
+            this.setState({
+              news: [...news, data.news],
+            });
+          } else {
+            const response = await fetch(
+              `https://api.currentsapi.services/v1/search?keywords=${stock.symbol}&language=en&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`,
+              { signal }
+            );
+            const data = await response.json();
+            this.setState({
+              news: [...news, data.news],
+            });
+          }
         });
       } else {
         this.setState({
