@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
-import { FinanceContext } from "../../Context";
-import Swiper from "react-id-swiper";
-import { LineChart, Line, ResponsiveContainer } from "recharts";
+import React, { useContext } from 'react';
+import { FinanceContext } from '../../Context';
+import Swiper from 'react-id-swiper';
+import { LineChart, Line, ResponsiveContainer } from 'recharts';
 
-import { Loading } from "../../App.styles";
-import { Title, Text, Container, SmallText} from "./Stocks.styles";
+import { Loading } from '../../App.styles';
+import { Title, Text, Container, SmallText } from './Stocks.styles';
 
 const params = {
   spaceBetween: 30,
@@ -30,7 +30,7 @@ const params = {
 };
 
 const Stocks = () => {
-  const { stocks, stockChart, handleClick } = useContext(FinanceContext);
+  const { stocks, stockChart, handleClick } = useContext(FinanceContext)
 
   return (
     <>
@@ -49,16 +49,16 @@ const Stocks = () => {
                   key={stock.symbol}
                 >
                   <div>
-                    <Text style={{ marginBottom: "30px" }}>{stock.price}</Text>
+                    <Text style={{ marginBottom: '30px' }}>{stock.price}</Text>
                     <div>
                       <Text>{stock.symbol}</Text>
                       {stock.name ? (
                         <SmallText>
-                          {stock.name.split(" ").slice(0, 2).join(" ")}
+                          {stock.name.split(' ').slice(0, 2).join(' ')}
                         </SmallText>
                       ) : null}
                     </div>
-                  </div> 
+                  </div>
                   <>
                     <ResponsiveContainer width={180}>
                       <LineChart data={stocksChart}>

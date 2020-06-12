@@ -1,10 +1,10 @@
-import React, { Component, createContext } from "react";
+import React, { Component, createContext } from 'react';
 import {
   auth,
   createUserProfileDocument,
-} from "./components/firebase/firebase.utils";
-import { Persist } from "react-persist";
-require("dotenv").config();
+} from './components/firebase/firebase.utils';
+import { Persist } from 'react-persist';
+require('dotenv').config();
 
 export const FinanceContext = createContext();
 
@@ -19,7 +19,7 @@ class FinanceContextProvider extends Component {
       mostActive: [],
       mostGainer: [],
       mostLoser: [],
-      name: "",
+      name: '',
       tempStock: [],
       stockChart: [],
       tempActive: [],
@@ -72,7 +72,7 @@ class FinanceContextProvider extends Component {
       }
     });
     // to get the size of the window, for responsive components
-    window.addEventListener("resize", this.updateProps);
+    window.addEventListener('resize', this.updateProps);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -84,7 +84,7 @@ class FinanceContextProvider extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateProps);
+    window.removeEventListener('resize', this.updateProps);
     this.controller.abort();
   }
 
@@ -103,18 +103,19 @@ class FinanceContextProvider extends Component {
   };
 
   abortFunc = (error) => {
-    if (error.name === "AbortError") {
-      console.log("Fetch Aborted");
+    if (error.name === 'AbortError') {
+      console.log('Fetch Aborted');
     } else {
       console.log(error.message);
     }
   };
 
+  // https: //financialmodelingprep.com/api/v3/quote/AAPL,FB,GOOG?apikey=e60b26a90ae8be141e75bf0b625687db
   getStocks = async () => {
     const signal = this.signal;
     try {
       const response = await fetch(
-        "https://financialmodelingprep.com/api/v3/quote/AAPL,FB,TSLA,MSFT,GOOG",
+        `https://financialmodelingprep.com/api/v3/quote/AAPL,FB,TSLA,MSFT,GOOG?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
         { signal }
       );
       const data = await response.json();
@@ -135,7 +136,7 @@ class FinanceContextProvider extends Component {
     const signal = this.signal;
     try {
       const response = await fetch(
-        "https://financialmodelingprep.com/api/v3/stock/actives",
+        `https://financialmodelingprep.com/api/v3/stock/actives?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
         { signal }
       );
       const data = await response.json();
@@ -156,7 +157,7 @@ class FinanceContextProvider extends Component {
     const signal = this.signal;
     try {
       const response = await fetch(
-        "https://financialmodelingprep.com/api/v3/stock/gainers",
+        `https://financialmodelingprep.com/api/v3/stock/gainers?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
         { signal }
       );
       const data = await response.json();
@@ -177,7 +178,7 @@ class FinanceContextProvider extends Component {
     const signal = this.signal;
     try {
       const response = await fetch(
-        "https://financialmodelingprep.com/api/v3/stock/losers",
+        `https://financialmodelingprep.com/api/v3/stock/losers?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
         { signal }
       );
       const data = await response.json();
@@ -206,26 +207,30 @@ weeks. But I made it!!! 💪💪💪
 */
   getStockCharts = () => {
     const signal = this.signal;
+
     try {
-      if (this.state.stocks.length > 4) {
-        this.state.stocks.map(async (stock, index) => {
-          const response = await fetch(
-            `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.symbol}`,
-            { signal }
-          );
-          const data = await response.json();
-          this.setState({
-            tempStock: [...this.state.tempStock, [data, index]],
+      const { stocks } = this.state;
+      if (stocks.length > 4) {
+        stocks &&
+          stocks.map(async (stock, index) => {
+            const response = await fetch(
+              `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.symbol}?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
+              { signal }
+            );
+            const data = await response.json();
+            this.setState({
+              tempStock: [...this.state.tempStock, [data, index]],
+            });
+
+            let newState = [...this.state.tempStock];
+            newState = newState
+              .sort((a, b) => a[1] - b[1])
+              .map((stock) => stock.slice(0, 1))
+              .flat(1);
+            this.setState({
+              stockChart: newState,
+            });
           });
-          let newState = [...this.state.tempStock];
-          newState = newState
-            .sort((a, b) => a[1] - b[1])
-            .map((stock) => stock.slice(0, 1))
-            .flat(1);
-          this.setState({
-            stockChart: newState,
-          });
-        });
       }
     } catch (error) {
       this.abortFunc(error);
@@ -235,24 +240,30 @@ weeks. But I made it!!! 💪💪💪
   getActiveCharts = () => {
     const signal = this.signal;
     try {
-      this.state.mostActive.map(async (stock, index) => {
-        const response = await fetch(
-          `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.ticker}`,
-          { signal }
-        );
-        const data = await response.json();
-        this.setState({
-          tempActive: [...this.state.tempActive, [data, index]],
+      this.state.mostActive &&
+        this.state.mostActive.map(async (stock, index) => {
+          const response = await fetch(
+            `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.ticker}?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
+            { signal }
+          );
+          const data = await response.json();
+          this.setState(
+            {
+              tempActive: [...this.state.tempActive, [data, index]],
+            },
+            () => {
+              console.log(this.state.tempActive);
+            }
+          );
+          let newState = [...this.state.tempActive];
+          newState = newState
+            .sort((a, b) => a[1] - b[1])
+            .map((stock) => stock.slice(0, 1))
+            .flat(1);
+          this.setState({
+            mostActiveChart: newState,
+          });
         });
-        let newState = [...this.state.tempActive];
-        newState = newState
-          .sort((a, b) => a[1] - b[1])
-          .map((stock) => stock.slice(0, 1))
-          .flat(1);
-        this.setState({
-          mostActiveChart: newState,
-        });
-      });
     } catch (error) {
       this.abortFunc(error);
     }
@@ -261,24 +272,26 @@ weeks. But I made it!!! 💪💪💪
   getGainerCharts = () => {
     const signal = this.signal;
     try {
-      this.state.mostGainer.map(async (stock, index) => {
-        const response = await fetch(
-          `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.ticker}`,
-          { signal }
-        );
-        const data = await response.json();
-        this.setState({
-          tempGainer: [...this.state.tempGainer, [data, index]],
+      const { mostGainer } = this.state;
+      mostGainer &&
+        mostGainer.map(async (stock, index) => {
+          const response = await fetch(
+            `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.ticker}?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
+            { signal }
+          );
+          const data = await response.json();
+          this.setState({
+            tempGainer: [...this.state.tempGainer, [data, index]],
+          });
+          let newState = [...this.state.tempGainer];
+          newState = newState
+            .sort((a, b) => a[1] - b[1])
+            .map((stock) => stock.slice(0, 1))
+            .flat(1);
+          this.setState({
+            mostGainerChart: newState,
+          });
         });
-        let newState = [...this.state.tempGainer];
-        newState = newState
-          .sort((a, b) => a[1] - b[1])
-          .map((stock) => stock.slice(0, 1))
-          .flat(1);
-        this.setState({
-          mostGainerChart: newState,
-        });
-      });
     } catch (error) {
       this.abortFunc(error);
     }
@@ -287,24 +300,26 @@ weeks. But I made it!!! 💪💪💪
   getLoserCharts = () => {
     const signal = this.signal;
     try {
-      this.state.mostLoser.map(async (stock, index) => {
-        const response = await fetch(
-          `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.ticker}`,
-          { signal }
-        );
-        const data = await response.json();
-        this.setState({
-          tempLoser: [...this.state.tempLoser, [data, index]],
+      const { mostLoser } = this.state;
+      mostLoser &&
+        mostLoser.map(async (stock, index) => {
+          const response = await fetch(
+            `https://financialmodelingprep.com/api/v3/historical-chart/1hour/${stock.ticker}?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
+            { signal }
+          );
+          const data = await response.json();
+          this.setState({
+            tempLoser: [...(mostLoser && this.state.tempLoser), [data, index]],
+          });
+          let newState = [...(mostLoser && this.state.tempLoser)];
+          newState = newState
+            .sort((a, b) => a[1] - b[1])
+            .map((stock) => stock.slice(0, 1))
+            .flat(1);
+          this.setState({
+            mostLoserChart: newState,
+          });
         });
-        let newState = [...this.state.tempLoser];
-        newState = newState
-          .sort((a, b) => a[1] - b[1])
-          .map((stock) => stock.slice(0, 1))
-          .flat(1);
-        this.setState({
-          mostLoserChart: newState,
-        });
-      });
     } catch (error) {
       this.abortFunc(error);
     }
@@ -323,7 +338,7 @@ weeks. But I made it!!! 💪💪💪
     const signal = this.signal;
     try {
       const response = await fetch(
-        `https://financialmodelingprep.com/api/v3/company/profile/${name}`,
+        `https://financialmodelingprep.com/api/v3/company/profile/${name}?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
         { signal }
       );
       const data = await response.json();
@@ -332,7 +347,7 @@ weeks. But I made it!!! 💪💪💪
           details: data,
         },
         () => {
-          this.getDetailsChart("1hour");
+          this.getDetailsChart('1hour');
         }
       );
     } catch (error) {
@@ -344,7 +359,7 @@ weeks. But I made it!!! 💪💪💪
     const signal = this.signal;
     try {
       const response = await fetch(
-        `https://financialmodelingprep.com/api/v3/historical-chart/${time}/${this.state.details.symbol}`,
+        `https://financialmodelingprep.com/api/v3/historical-chart/${time}/${this.state.details.symbol}?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
         { signal }
       );
       const data = await response.json();
@@ -366,7 +381,7 @@ weeks. But I made it!!! 💪💪💪
     const signal = this.signal;
     try {
       const response = await fetch(
-        `https://financialmodelingprep.com/api/v3/search?query=${this.state.search}&limit=15`,
+        `https://financialmodelingprep.com/api/v3/search?query=${this.state.search}&limit=15&apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
         { signal }
       );
       const data = await response.json();
@@ -388,7 +403,7 @@ weeks. But I made it!!! 💪💪💪
     try {
       this.state.searchCompany.map(async (stock) => {
         const response = await fetch(
-          `https://financialmodelingprep.com/api/v3/quote/${stock.symbol}`,
+          `https://financialmodelingprep.com/api/v3/quote/${stock.symbol}?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
           { signal }
         );
         const data = await response.json();
@@ -447,9 +462,9 @@ weeks. But I made it!!! 💪💪💪
           if (stock.profile.companyName) {
             const response = await fetch(
               `https://api.currentsapi.services/v1/search?keywords=${stock.profile.companyName
-                .split(" ")
+                .split(' ')
                 .slice(0, 1)
-                .join(" ")}&language=en&apiKey=${
+                .join(' ')}&language=en&apiKey=${
                 process.env.REACT_APP_NEWS_API_KEY
               }`,
               { signal }
@@ -489,7 +504,7 @@ weeks. But I made it!!! 💪💪💪
     const signal = this.signal;
     try {
       const response = await fetch(
-        "https://financialmodelingprep.com/api/v3/is-the-market-open",
+        `https://financialmodelingprep.com/api/v3/is-the-market-open?apikey=${process.env.REACT_APP_STOCK_API_KEY}`,
         { signal }
       );
       const data = await response.json();
