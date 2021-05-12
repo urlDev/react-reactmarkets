@@ -18,7 +18,7 @@
     "react-uuid": "^1.0.2",
     "recharts": "^1.8.5",
     "styled-components": "^5.0.1",
-    "swiper": "^5.3.7"
+    "swiper": "^6.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
